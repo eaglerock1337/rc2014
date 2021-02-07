@@ -20,6 +20,7 @@ class RC2014Upload:
         self.outfile = args.file
 
         self.data = self._import_data()
+        self.checksum = self._get_checksum()
         self.output = self._format_output()
 
     def _parse_args(self):
@@ -69,13 +70,31 @@ class RC2014Upload:
         with open(os.path.join(self.dir, self.infile), "rb") as hex:
             return bytearray(hex.read())
 
+    def _get_checksum(self):
+        """
+        Generate the expected checksum of the file as follows:
+        2 bytes:
+        - low-byte of the length of the file being uploaded
+        - low-byte of the sum of each byte being uploaded
+        """
+        length = 0
+        bytesum = 0
+        for byte in self.data:
+            length += 1
+            bytesum += byte
+
+        lowlength = format(0x000000FF & length, "x")
+        lowsum = format(0x000000FF & bytesum, "x")
+
+        return f"{str(lowlength).zfill(2)}{str(lowsum).zfill(2)}"
+
     def _format_output(self):
         """
         Uses the input data and command-line args to format the output string.
         """
         output = f"A:DOWNLOAD {self.filename.upper()}\r\nU{self.user}\r\n:"
         output += self.data.hex().upper()
-        output += ">0050\r\n"
+        output += f">{self.checksum}\r\n"
 
         return output
 
@@ -108,7 +127,7 @@ class RC2014Upload:
         """
         Processes the different types of outputs and outputs result to stdout.
         """
-        print(f"Outputting data for {self.filename}:\n")
+        print(f"Outputting data for {self.filename}:")
         if self.stdout:
             self._output_stdout()
         if self.outfile is not None:
@@ -120,5 +139,6 @@ class RC2014Upload:
 
 
 if __name__ == "__main__":
+    print("Formatting output for the RC2014 console...")
     uploader = RC2014Upload()
     uploader.process_output()
