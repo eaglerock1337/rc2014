@@ -92,9 +92,9 @@ class RC2014Upload:
         """
         Uses the input data and command-line args to format the output string.
         """
-        output = f"A:DOWNLOAD {self.filename.upper()}\r\nU{self.user}\r\n:"
+        output = f"A:DOWNLOAD {self.filename.upper()}\nU{self.user}\n:"
         output += self.data.hex().upper()
-        output += f">{self.checksum}\r\n"
+        output += f">{self.checksum}\n"
 
         return output
 
