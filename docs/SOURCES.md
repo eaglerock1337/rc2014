@@ -11,3 +11,11 @@ This is the documentation for Small Computer Monitor by the author. Their websit
 You can visit the specific link I found these docs here:
 
 `https://smallcomputercentral.wordpress.com/small-computer-monitor/small-computer-monitor-v1-0/`
+
+## `bdsoft bds c`
+
+The official BDS site is located here:
+
+`https://www.bdsoft.com/resources/bdsc.html`
+
+From there, you can get the documentation and the now open domain code.
