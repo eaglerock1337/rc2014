@@ -1,0 +1,14 @@
+terminal:
+  port:         /dev/ttyACM0
+  baud:         115200
+  databits:     8
+  # parity:       serial.PARITY_NONE
+  stopbits:     1
+  timeout:      0
+  writetimeout: 0
+  flowctl:
+    soft:       False
+    rtscts:     True
+    dsrdtr:     False
+  txdelay:      1.0
+  rxdelay:      0.0

@@ -3,7 +3,27 @@
 import argparse
 import os
 import pyperclip
+import yaml
+import serial
 import sys
+
+
+SETTINGS_YAML = "settings.yaml"
+SERIAL_DEFAULTS = {
+    "baud":         115200,
+    "databits":     8,
+    "parity":       serial.PARITY_NONE,
+    "stopbits":     1,
+    "timeout":      0,
+    "writetimeout": 0,
+    "txdelay":      1.0,
+    "rxdelay":      0.0,
+    "flowctl": {
+        "soft":     False,
+        "rtscts":   True,
+        "dsrdtr":   False,
+    },
+}
 
 
 class RC2014Upload:
@@ -18,10 +38,13 @@ class RC2014Upload:
         self.clipboard = args.clipboard
         self.stdout = args.stdout
         self.outfile = args.file
+        self.terminal = args.terminal
 
         self.data = self._import_data()
         self.checksum = self._get_checksum()
         self.output = self._format_output()
+        self.settings = self._load_settings()
+        print(self.settings)
 
     def _parse_args(self):
         """
@@ -60,8 +83,24 @@ class RC2014Upload:
             type=str,
             help="Save data to the specified file path.",
         )
+        outputs.add_argument(
+            "-t",
+            "--terminal",
+            action="store_true",
+            help="Send data directly over a serial port to the rc2014.",
+        )
 
         return parser.parse_args()
+
+    def _load_settings(self):
+        """
+        Loads all configuration options for the script from settings.yaml in the same directory.
+        """
+        if os.path.exists(os.path.join(sys.path[0], SETTINGS_YAML)):
+            with open(os.path.join(sys.path[0], SETTINGS_YAML), "r") as settings:
+                return yaml.load(settings, Loader=yaml.FullLoader)
+        
+        return {}
 
     def _import_data(self):
         """
@@ -98,6 +137,44 @@ class RC2014Upload:
 
         return output
 
+    def _setup_terminal(self):
+        """
+        Sets up a serial connection to the rc2014 based on the YAML settings.
+        """
+        if "terminal" not in self.settings:
+            print("Terminal settings missing...please update settings.yaml!")
+            exit(1)
+        
+        print("Configuring serial terminal...")
+        term = self.settings["terminal"]
+
+        if not term["port"]:
+            print("Terminal port undefined...please set port under the terminal section in settings.yaml!")
+            exit(1)
+
+        baudrate = term["baud"] if "baud" in term else SERIAL_DEFAULTS["baud"]
+        serialout = serial.Serial(port=term["port"], baudrate=baudrate)
+        print(f"Configuring port {term['port']} at {baudrate}bps...")
+
+        serialout.bytesize = term["databits"] if "databits" in term else SERIAL_DEFAULTS["databits"]
+        serialout.parity = term["parity"] if "parity" in term else SERIAL_DEFAULTS["parity"]
+        serialout.stopbits = term["stopbits"] if "stopbits" in term else SERIAL_DEFAULTS["stopbits"]
+        serialout.timeout = term["timeout"] if "timeout" in term else SERIAL_DEFAULTS["timeout"]
+
+        if "flowctl" in term:
+            serialout.xonxoff = term["flowctl"]["soft"] if "soft" in term["flowctl"] else SERIAL_DEFAULTS["flowctl"]["soft"]
+            serialout.rtscts = term["flowctl"]["rtscts"] if "rtscts" in term["flowctl"] else SERIAL_DEFAULTS["flowctl"]["rtscts"]
+            serialout.dsrdtr = term["flowctl"]["dsrdtr"] if "dsrdtr" in term["flowctl"] else SERIAL_DEFAULTS["flowctl"]["dsrdtr"]
+        else:
+            serialout.xonxoff = SERIAL_DEFAULTS["flowctl"]["xonxoff"]
+            serialout.rtscts = SERIAL_DEFAULTS["flowctl"]["rtscts"]
+            serialout.dsrdtr = SERIAL_DEFAULTS["flowctl"]["dsrdtr"]       
+
+        serialout.txdelay = term["txdelay"] if "txdelay" in term else SERIAL_DEFAULTS["txdelay"]
+        serialout.rxdelay = term["rxdelay"] if "rxdelay" in term else SERIAL_DEFAULTS["rxdelay"]
+
+        return serialout
+
     def _output_stdout(self):
         """
         Prints the output to stdout
@@ -123,6 +200,21 @@ class RC2014Upload:
         print("- " * 30)
         print(f"The output has been saved to {self.outfile}.")
 
+    def _output_terminal(self):
+        """
+        Prints output directly to the serial terminal. Terminal needs to be
+        configured first.
+        """
+        serialout = self._setup_terminal()
+        # try:
+        #     serialout.open()
+        # except Exception as e:
+        #     print("Error opening serial port: " + str(e))
+        #     sys.exit(1)
+
+        serialout.write(self.output.encode("utf-8"))        
+        print(f"The output has been sent to serial port {self.settings['terminal']['port']}.")
+
     def process_output(self):
         """
         Processes the different types of outputs and outputs result to stdout.
@@ -134,11 +226,13 @@ class RC2014Upload:
             self._output_file()
         if self.clipboard:
             self._output_clipboard()
-        if not self.stdout and not self.clipboard and not self.outfile:
+        if self.terminal:
+            self._output_terminal()
+        if not self.stdout and not self.clipboard and not self.outfile and not self.terminal:
             self._output_clipboard()
 
 
 if __name__ == "__main__":
-    print("Formatting output for the RC2014 console...")
+    print("Formatting output for the rc2014 console...")
     uploader = RC2014Upload()
     uploader.process_output()

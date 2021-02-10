@@ -5,9 +5,12 @@ verify_ssl = true
 
 [dev-packages]
 black = "*"
+pylint = "*"
 
 [packages]
 pyperclip = "*"
+pyyaml = "*"
+pyserial = "*"
 
 [requires]
 python_version = "3.8"
