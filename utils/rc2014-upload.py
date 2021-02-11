@@ -131,9 +131,9 @@ class RC2014Upload:
         """
         Uses the input data and command-line args to format the output string.
         """
-        output = f"A:DOWNLOAD {self.filename.upper()}\nU{self.user}\n:"
+        output = f"A:DOWNLOAD {self.filename.upper()}\r\nU{self.user}\r\n:"
         output += self.data.hex().upper()
-        output += f">{self.checksum}\n"
+        output += f">{self.checksum}\r\n"
 
         return output
 
@@ -202,12 +202,13 @@ class RC2014Upload:
         """
         serialout = self._setup_terminal()
         txdelay = self.settings["terminal"]["txdelay"] if "txdelay" in self.settings["terminal"] else SERIAL_DEFAULTS["txdelay"]
-        # rxdelay = self.settings["terminal"]["rxdelay"] if "rxdelay" in self.settings["terminal"] else SERIAL_DEFAULTS["rxdelay"]
+        rxdelay = self.settings["terminal"]["rxdelay"] if "rxdelay" in self.settings["terminal"] else SERIAL_DEFAULTS["rxdelay"]
 
         for byte in self.output:
-            serialout.write(byte.encode())  
+            serialout.write(byte.encode())
             time.sleep(txdelay)
 
+        time.sleep(rxdelay)
         print("- " * 30)      
         print(f"The output has been sent to serial port {self.settings['terminal']['port']}.")
 

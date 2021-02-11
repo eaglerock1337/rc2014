@@ -2,7 +2,6 @@ terminal:
   port:         /dev/ttyACM0
   baud:         115200
   databits:     8
-  # parity:       serial.PARITY_NONE
   stopbits:     1
   timeout:      0
   writetimeout: 0
@@ -10,5 +9,5 @@ terminal:
     soft:       False
     rtscts:     True
     dsrdtr:     False
-  txdelay:      0.0002
-  rxdelay:      1.0
+  txdelay:      0.001
+  rxdelay:      0.01
