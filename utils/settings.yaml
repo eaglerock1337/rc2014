@@ -10,5 +10,5 @@ terminal:
     soft:       False
     rtscts:     True
     dsrdtr:     False
-  txdelay:      0.001
+  txdelay:      0.0002
   rxdelay:      1.0
