@@ -6,6 +6,7 @@ import pyperclip
 import yaml
 import serial
 import sys
+import time
 
 
 SETTINGS_YAML = "settings.yaml"
@@ -16,8 +17,8 @@ SERIAL_DEFAULTS = {
     "stopbits":     1,
     "timeout":      0,
     "writetimeout": 0,
-    "txdelay":      1.0,
-    "rxdelay":      0.0,
+    "txdelay":      0.001,
+    "rxdelay":      1.0,
     "flowctl": {
         "soft":     False,
         "rtscts":   True,
@@ -44,7 +45,6 @@ class RC2014Upload:
         self.checksum = self._get_checksum()
         self.output = self._format_output()
         self.settings = self._load_settings()
-        print(self.settings)
 
     def _parse_args(self):
         """
@@ -145,9 +145,7 @@ class RC2014Upload:
             print("Terminal settings missing...please update settings.yaml!")
             exit(1)
         
-        print("Configuring serial terminal...")
         term = self.settings["terminal"]
-
         if not term["port"]:
             print("Terminal port undefined...please set port under the terminal section in settings.yaml!")
             exit(1)
@@ -169,9 +167,6 @@ class RC2014Upload:
             serialout.xonxoff = SERIAL_DEFAULTS["flowctl"]["xonxoff"]
             serialout.rtscts = SERIAL_DEFAULTS["flowctl"]["rtscts"]
             serialout.dsrdtr = SERIAL_DEFAULTS["flowctl"]["dsrdtr"]       
-
-        serialout.txdelay = term["txdelay"] if "txdelay" in term else SERIAL_DEFAULTS["txdelay"]
-        serialout.rxdelay = term["rxdelay"] if "rxdelay" in term else SERIAL_DEFAULTS["rxdelay"]
 
         return serialout
 
@@ -206,13 +201,14 @@ class RC2014Upload:
         configured first.
         """
         serialout = self._setup_terminal()
-        # try:
-        #     serialout.open()
-        # except Exception as e:
-        #     print("Error opening serial port: " + str(e))
-        #     sys.exit(1)
+        txdelay = self.settings["terminal"]["txdelay"] if "txdelay" in self.settings["terminal"] else SERIAL_DEFAULTS["txdelay"]
+        # rxdelay = self.settings["terminal"]["rxdelay"] if "rxdelay" in self.settings["terminal"] else SERIAL_DEFAULTS["rxdelay"]
 
-        serialout.write(self.output.encode("utf-8"))        
+        for byte in self.output:
+            serialout.write(byte.encode())  
+            time.sleep(txdelay)
+
+        print("- " * 30)      
         print(f"The output has been sent to serial port {self.settings['terminal']['port']}.")
 
     def process_output(self):
