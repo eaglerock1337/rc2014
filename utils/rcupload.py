@@ -2,7 +2,7 @@
 
 import argparse
 import os
-import pyperclip
+import pyclip
 import yaml
 import serial
 import sys
@@ -182,7 +182,7 @@ class RC2014Upload:
         """
         Copies the output to the system clipboard.
         """
-        pyperclip.copy(self.output)
+        pyclip.copy(self.output)
         print("- " * 30)
         print("The output has been copied to your clipboard\nfor easy copy-paste into your terminal.")
 
