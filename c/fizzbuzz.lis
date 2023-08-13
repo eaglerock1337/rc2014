@@ -1,0 +1,86 @@
+fizzbuzz.asm:
+     1                          ; FizzBuzz algorithm for Z80 Assembler
+     2                          
+     3                              ORG 8000
+     4                          
+     5                          LIMIT = 100
+     6                          
+     7                          start:
+     8  0000  d9                    exx
+     9  0001  e5                    push hl
+    10  0002  0e01                  ld c, 1
+    11                          
+    12                          _main:
+    13  0004  3e00                  ld a,0
+    14  0006  324800                ld (hit),a
+    15  0009  51                    ld d,c
+    16  000a  1e03                  ld e,3
+    17  000c  cd5100                call div_d_e
+    18  000f  fe00                  cp a, 0
+    19  0011  200b                  jr nz, nomod3
+    20  0013  3e01                  ld a,1
+    21  0015  324800                ld (hit),a
+    22  0018  114900                ld de, fizz
+    23  001b  cd5e00                call print_de
+    24                          nomod3:
+    25  001e  51                    ld d,c
+    26  001f  1e05                  ld e,5
+    27  0021  cd5100                call div_d_e
+    28  0024  fe00                  cp a,0
+    29  0026  200b                  jr nz, nomod5
+    30  0028  3e01                  ld a,1
+    31  002a  324800                ld (hit),a
+    32  002d  114d00                ld de, buzz
+    33  0030  cd5e00                call print_de
+    34                          nomod5:
+    35  0033  3a4800                ld a,(hit)
+    36  0036  fe00                  cp 0
+    37  0038  2000                  jr nz, fizzbuzz
+    38                          
+    39                          fizzbuzz:
+    40  003a  3e0a                  ld a, $0A       ; load \n newline char
+    41  003c  cd3000                call $30
+    42  003f  0c                    inc c
+    43  0040  3e64                  ld a,LIMIT
+    44  0042  b9                    cp c
+    45  0043  20bf                  jr nz,_main
+    46                          
+    47  0045  e1                    pop hl
+    48  0046  d9                    exx
+    49  0047  c9                    ret
+    50                          
+    51                          hit:
+    52  0048  00                    db 0
+    53                          fizz:
+    54  0049  46697a7a              db "Fizz"
+    55                          buzz:
+    56  004d  42757a7a              db "Buzz"
+    57                          
+    58                          
+    59                          div_d_e:
+    60  0051  af                    xor a
+    61  0052  47                    ld b,a
+    62                          
+    63                          divloop:
+    64  0053  cb22                  sla d
+    65  0055  17                    rla
+    66  0056  bb                    cp e
+    67  0057  3801                  jr c, cont
+    68  0059  93                    sub e
+    69                          cont:
+    70  005a  14                    inc d
+    71                          
+    72  005b  10f6                  djnz divloop
+    73  005d  c9                    ret
+    74                          
+    75                          print_de:
+    76  005e  0604                  ld b, 4
+    77                          printloop:
+    78  0060  1a                    ld a, (de)
+    79  0061  cd3000                call $30
+    80  0064  13                    inc de
+    81  0065  10f9                  djnz printloop
+    82  0067  c9                    ret
+    83                          
+    84                          ; modulo algo: http://chilliant.blogspot.com/2010/12/modulo-arithmetic-in-z80-assembler.html
+    85                          
