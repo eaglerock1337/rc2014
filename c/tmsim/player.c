@@ -1,22 +1,32 @@
 #include <stdio.h>
 #include <stdint.h>
+#include "player.h"
 
 /***************************************
-*
+* TMSim - Player module
 ***************************************/
 
-struct player {
-    // player stats
-    uint8_t intelligence;
-    uint8_t wisdom;
-    uint8_t engineering;
-    uint8_t dexterity;
-    uint8_t disguise;
-    uint8_t luck;
+int roll_stat(int difficulty) {
+    return rand() % 5 + (6 - difficulty);
+}
 
-    // player progress
-    uint8_t experience;
-    uint8_t level;    
-    uint8_t aggro;
-};
+void roll_stats(int difficulty, struct player* p) {
+    p->intelligence = roll_stat(difficulty);
+    p->wisdom = roll_stat(difficulty);
+    p->engineering = roll_stat(difficulty);
+    p->dexterity = roll_stat(difficulty);
+    p->disguise = roll_stat(difficulty);
+    p->luck = roll_stat(difficulty);
+}
+
+struct player get_player(int difficulty) {
+    struct player new;
+    roll_stats(difficulty, &new);
+
+    new.experience = 0;
+    new.level = 1;
+    new.aggro = 0;
+
+    return new;
+}
 
