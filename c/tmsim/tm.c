@@ -1,59 +1,72 @@
 #include <stdio.h>
 #include <stdint.h>
 #include <stdbool.h>
+#include "tm.h"
 
 /***************************************
 * TMSim - Time machine module
 ***************************************/
 
-#define OFF     0
-#define ON      1
-#define FAULT   2
-
-struct time_machine_parts {
-    uint8_t airlock;
-    uint8_t invis_shield;
-    uint8_t hover_prop;
-    uint8_t tesla_coil;
-    uint8_t mr_fusion;
-    uint8_t generator;
-
-    uint8_t energy_cells;
-    uint8_t power_dist;
-    uint8_t life_support;
-    uint8_t time_circuits;
-    uint8_t sensor_system;
-    uint8_t system_console;
-
-    uint8_t motherboard;
-    uint8_t processor;
-    uint8_t memory;
-    uint8_t storage;
-    uint8_t power_supply;
-    uint8_t tm_interface;
+/* Rolls a part status with a 25% variance
+*    Difficulty is on a 1-5 sliding scale:
+*    Difficulty 1 = 75-100% per part
+*    Difficulty 5 = 25-50% per part
+*/
+uint8_t roll_part(uint8_t difficulty) {
+    uint8_t rando = rand() % 25;
+    return rando + (6 - difficulty) * 15 + 31;
 };
 
-struct time_machine_status {
-    uint8_t airlock;
-    uint8_t invis_shield;
-    uint8_t hover_prop;
-    uint8_t tesla_coil;
-    uint8_t mr_fusion;
-    uint8_t generator;
+char* get_exterior_part(uint8_t part) {
+    switch (part) {
+    case 0:     return "Time Machine Airlock";  break;
+    case 1:     return "Insibility Shield";     break;
+    case 2:     return "Hover Propulsion";      break;
+    case 3:     return "Tesla Charging Coil";   break;
+    case 4:     return "Mr Fusion Reactor";     break;
+    case 5:     return "Steam Charging Unit";   break;
+    default:    return "Something went wrong";
+    }
+}
 
-    uint8_t energy_cells;
-    uint8_t power_dist;
-    uint8_t life_support;
-    uint8_t time_circuits;
-    uint8_t sensor_system;
-    uint8_t system_console;
+char* get_interior_part(uint8_t part) {
+    switch (part) {
+    case 0:     return "Main Energy Cells";     break;
+    case 1:     return "Power Distrib. Unit";   break;
+    case 2:     return "Life Support System";   break;
+    case 3:     return "Time Travel Circuits";  break;
+    case 4:     return "Threat Sensor System";  break;
+    case 5:     return "Time Machine Console";  break;
+    default:    return "Something went wrong";
+    }
+}
 
-    uint8_t computer;
+char* get_computer_part(uint8_t part) {
+    switch (part) {
+    case 0:     return "System Backplane";      break;
+    case 1:     return "Dual System Clock";     break;
+    case 2:     return "Z80 Processor Board";   break;
+    case 3:     return "RAM/ROM Memory Unit";   break;
+    case 4:     return "Dual Serial I/O";       break;
+    case 5:     return "TM Hardware Bridge";    break;
+    default:    return "Something went wrong";
+    }
+}
+
+
+struct time_machine_parts roll_parts(uint8_t difficulty) {
+    struct time_machine_parts time;
+
+    // stuff goes here.
+
+    return time;
 };
 
-struct time_machine {
-    struct time_machine_parts parts;
-    struct time_machine_status status;
 
-    uint32_t energy;
+struct time_machine get_time_machine(uint8_t difficulty) {
+    struct time_machine time;
+
+    // stuff goes here.
+
+    return time;
 };

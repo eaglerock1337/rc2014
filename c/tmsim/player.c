@@ -6,11 +6,11 @@
 * TMSim - Player module
 ***************************************/
 
-int roll_stat(int difficulty) {
+uint8_t roll_stat(uint8_t difficulty) {
     return rand() % 5 + (6 - difficulty);
 }
 
-void roll_stats(int difficulty, struct player* p) {
+void roll_stats(uint8_t difficulty, struct player* p) {
     p->intelligence = roll_stat(difficulty);
     p->wisdom = roll_stat(difficulty);
     p->engineering = roll_stat(difficulty);
@@ -19,7 +19,7 @@ void roll_stats(int difficulty, struct player* p) {
     p->luck = roll_stat(difficulty);
 }
 
-struct player get_player(int difficulty) {
+struct player get_player(uint8_t difficulty) {
     struct player new;
     roll_stats(difficulty, &new);
 
