@@ -1,3 +1,8 @@
+#include <stdio.h>
+#include <stdint.h>
+
+#include "tm.h"
+
 /***************************************
 * TMSim - TDOS system header file
 ***************************************/

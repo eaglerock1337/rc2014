@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdint.h>
 #include <stdbool.h>
+
 #include "tm.h"
 
 /***************************************
@@ -15,6 +16,22 @@
 uint8_t roll_part(uint8_t difficulty) {
     uint8_t rando = rand() % 25;
     return rando + (6 - difficulty) * 15 + 31;
+};
+
+void roll_parts(uint8_t difficulty, struct time_machine_parts* parts) {
+    for(int i = 0; i < 6; i++) {
+        parts->exterior[i] = roll_part(difficulty);
+        parts->interior[i] = roll_part(difficulty);
+        parts->computer[i] = roll_part(difficulty);
+    }
+};
+
+struct time_machine get_time_machine(uint8_t difficulty) {
+    struct time_machine time;
+
+    // stuff goes here.
+
+    return time;
 };
 
 char* get_exterior_part(uint8_t part) {
@@ -52,21 +69,3 @@ char* get_computer_part(uint8_t part) {
     default:    return "Something went wrong";
     }
 }
-
-
-struct time_machine_parts roll_parts(uint8_t difficulty) {
-    struct time_machine_parts time;
-
-    // stuff goes here.
-
-    return time;
-};
-
-
-struct time_machine get_time_machine(uint8_t difficulty) {
-    struct time_machine time;
-
-    // stuff goes here.
-
-    return time;
-};

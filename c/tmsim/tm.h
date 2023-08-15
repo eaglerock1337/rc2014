@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include <stdint.h>
-#include <stdbool.h>
 
 /***************************************
 * TMSim - Time machine header file
@@ -38,6 +37,12 @@ struct time_machine {
 // rolls a single part status based on a 1-5 difficulty
 uint8_t roll_part(uint8_t);
 
+// roll time machine part stats based on a 1-5 difficulty
+void roll_parts(uint8_t, struct time_machine_parts*);
+
+// get a time machine struct with initialized stats
+struct time_machine get_time_machine(uint8_t);
+
 // returns an exterior part name based on its array ID
 char* get_exterior_part(uint8_t);
 
@@ -46,9 +51,3 @@ char* get_interior_part(uint8_t);
 
 // returns a computer part name based on its array ID
 char* get_computer_part(uint8_t);
-
-// roll time machine part stats based on a 1-5 difficulty
-void roll_parts(uint8_t, struct time_machine_parts*);
-
-// get a time machine struct with initialized stats
-struct time_machine get_time_machine(uint8_t);
