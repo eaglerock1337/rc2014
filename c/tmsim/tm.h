@@ -19,21 +19,23 @@
 #define WRN     2   // warning status
 #define FLT     3   // fault status
 
-// exterior part values
-#define AIRLOCK 0
-#define SHIELD  1
-#define HOVER   2
-#define TESLA   3
-#define FUSION  4
-#define STEAM   5
+// exterior part power values
+#define AIRLOCK     0
+#define SHIELD      1
+#define HOVER       2
+#define TESLA       3
+#define FUSION      4
+#define STEAM       5
+#define EXTERIOR    6
 
-// interior part values
+// interior part power values
 #define RC2014      0
 #define POWER       1
 #define SUPPORT     2
 #define CIRCUITS    3
 #define SENSORS     4
 #define CONSOLE     5
+#define INTERIOR    6
 
 // exterior power bitwise vales
 #define AIRLOCK_ON  1
@@ -45,12 +47,12 @@
 #define EXT_READY   64
 
 // interior power bitwise values
-#define POWER_ON    1
-#define SUPPORT_ON  2
-#define CIRCUITS_ON 4
-#define SENSORS_ON  8
-#define CONSOLE_ON  16
-#define COMPUTER_ON 32
+#define RC2014_ON   1
+#define POWER_ON    2
+#define SUPPORT_ON  4
+#define CIRCUITS_ON 8
+#define SENSORS_ON  16
+#define CONSOLE_ON  32
 #define INT_READY   64
 
 /***** data structures *****/
@@ -76,7 +78,7 @@ struct time_machine {
     uint8_t int_power;      // bitwise
 };
 
-/***** functions *****/
+/***** init functions *****/
 
 // rolls a single part status based on a 1-5 difficulty
 uint8_t roll_part(uint8_t);
@@ -84,8 +86,10 @@ uint8_t roll_part(uint8_t);
 // roll time machine part stats based on a 1-5 difficulty
 void roll_parts(uint8_t, struct time_machine_parts*);
 
-// get a time machine struct with initialized stats
+// main time machine data structure
 struct time_machine get_time_machine(uint8_t);
+
+/***** helper functions *****/
 
 // get bitwise power status of an exterior part by ID
 bool get_exterior_power(uint8_t);
@@ -101,3 +105,8 @@ char* get_interior_part(uint8_t);
 
 // returns a computer part name based on its array ID
 char* get_computer_part(uint8_t);
+
+/****** data functions *****/
+
+// refresh the part & power status of the time machine
+void refresh_data(struct time_machine*);

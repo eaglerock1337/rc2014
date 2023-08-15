@@ -35,15 +35,31 @@ struct time_machine get_time_machine(uint8_t difficulty) {
 };
 
 // get bitwise power status of an exterior part by ID
-bool exterior_power(uint8_t part) {
+bool exterior_power(uint8_t part, uint8_t byte) {
     switch (part) {
-    case AIRLOCK:   
+    case AIRLOCK:   return byte & AIRLOCK_ON;   break;
+    case SHIELD:    return byte & SHIELD_ON;    break;
+    case HOVER:     return byte & HOVER_ON;     break;
+    case TESLA:     return byte & TESLA_ON;     break;
+    case FUSION:    return byte & FUSION_ON;    break;
+    case STEAM:     return byte & STEAM_ON;     break;
+    case EXTERIOR:  return byte & EXT_READY;    break;
+    default:        return 0;   // do error stuff later
     }
 };
 
 // get bitwise power status of an interior part by ID
-bool interior_power(uint8_t id) {
-
+bool interior_power(uint8_t part, uint8_t byte) {
+    switch (part) {
+    case RC2014:    return byte & RC2014;       break;
+    case POWER:     return byte & SHIELD_ON;    break;
+    case SUPPORT:   return byte & HOVER_ON;     break;
+    case CIRCUITS:  return byte & TESLA_ON;     break;
+    case SENSORS:   return byte & FUSION_ON;    break;
+    case CONSOLE:   return byte & STEAM_ON;     break;
+    case INTERIOR:  return byte & EXT_READY;    break;
+    default:        return 0;   // do error stuff later
+    }
 };
 
 char* get_exterior_part(uint8_t part) {
@@ -80,4 +96,14 @@ char* get_computer_part(uint8_t part) {
     case 5:     return "TM Hardware Bridge";    break;
     default:    return "Something went wrong";
     }
+}
+
+void refresh_data(struct time_machine* tm) {
+    // this doesn't work yet...bitwise or doesn't unset a set bit
+    bool is_ready = (tm->ext_power & (EXT_READY - 1) == EXT_READY - 1);
+    uint8_t set_byte = is_ready ? EXT_READY : 0;
+    tm->ext_power = tm->ext_power | set_byte;
+    is_ready = (tm->int_power & (INT_READY - 1) == INT_READY - 1);
+    set_byte = is_ready ? INT_READY : 0;
+    tm->int_power = tm->int_power | set_byte;
 }

@@ -18,14 +18,15 @@ The project is broken down into multiple files, the main ones being:
 
 Additional files support the game by providing data structures & helper functions:
 
-- `intro.c`  - the game introduction & dialogue
-- `player.c` - the player's stats and progress
-- `aggro.c`  - outside threats and tracking aggro
-- `tm.c`     - the main time machine struct
-- `travel.c` - time travel routines
-- `date.c`   - the current day and local surroundings
-- `rc2014.c` - the time machine computer
-- `ending.c` - the different game endings
-- `save.c`   - file load/save routines
+- `intro.c`   - the game introduction & dialogue
+- `player.c`  - the player's stats and progress
+- `aggro.c`   - outside threats and tracking aggro
+- `tm.c`      - the main time machine struct
+- `travel.c`  - time travel routines
+- `date.c`    - the current day and local surroundings
+- `rc2014.c`  - the time machine computer
+- `narrate.c` - game narration & dialogue
+- `ending.c`  - the different game endings
+- `save.c`    - file load/save routines
 
 I'm sure I'll have some files containing the game data unless I somehow figure out how to avoid needing to store a lot of game text.

@@ -5,6 +5,7 @@
 * TMSim - Player header file
 ***************************************/
 
+// stats array mappings
 #define INTELLIGENCE    0;
 #define WISDOM          1;
 #define ENGINEERING     2;
