@@ -34,6 +34,18 @@ struct time_machine get_time_machine(uint8_t difficulty) {
     return time;
 };
 
+// get bitwise power status of an exterior part by ID
+bool exterior_power(uint8_t part) {
+    switch (part) {
+    case AIRLOCK:   
+    }
+};
+
+// get bitwise power status of an interior part by ID
+bool interior_power(uint8_t id) {
+
+};
+
 char* get_exterior_part(uint8_t part) {
     switch (part) {
     case 0:     return "Time Machine Airlock";  break;

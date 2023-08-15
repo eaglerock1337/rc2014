@@ -1,5 +1,6 @@
-#include <stdio.h>
+#include <stdbool.h>
 #include <stdint.h>
+#include <stdio.h>
 
 /***************************************
 * TMSim - Time machine header file
@@ -11,6 +12,46 @@
 
 #define OPEN    0   // air lock open
 #define CLOSED  1   // air lock closed
+
+// display statuses
+#define OK      0   // nominal status
+#define INF     1   // info status
+#define WRN     2   // warning status
+#define FLT     3   // fault status
+
+// exterior part values
+#define AIRLOCK 0
+#define SHIELD  1
+#define HOVER   2
+#define TESLA   3
+#define FUSION  4
+#define STEAM   5
+
+// interior part values
+#define RC2014      0
+#define POWER       1
+#define SUPPORT     2
+#define CIRCUITS    3
+#define SENSORS     4
+#define CONSOLE     5
+
+// exterior power bitwise vales
+#define AIRLOCK_ON  1
+#define SHIELD_ON   2
+#define HOVER_ON    4
+#define TESLA_ON    8
+#define FUSION_ON   16
+#define STEAM_ON    32
+#define EXT_READY   64
+
+// interior power bitwise values
+#define POWER_ON    1
+#define SUPPORT_ON  2
+#define CIRCUITS_ON 4
+#define SENSORS_ON  8
+#define CONSOLE_ON  16
+#define COMPUTER_ON 32
+#define INT_READY   64
 
 /***** data structures *****/
 
@@ -27,9 +68,12 @@ struct time_machine_status {
 };
 
 struct time_machine {
-    struct time_machine_parts parts;
+    uint32_t energy;        // energy 
+    uint8_t tm_status;      // main status
     struct time_machine_status status;
-    uint32_t energy;
+    struct time_machine_parts parts;
+    uint8_t ext_power;      // bitwise
+    uint8_t int_power;      // bitwise
 };
 
 /***** functions *****/
@@ -42,6 +86,12 @@ void roll_parts(uint8_t, struct time_machine_parts*);
 
 // get a time machine struct with initialized stats
 struct time_machine get_time_machine(uint8_t);
+
+// get bitwise power status of an exterior part by ID
+bool get_exterior_power(uint8_t);
+
+// get bitwise power status of an interior part by ID
+bool get_interior_power(uint8_t);
 
 // returns an exterior part name based on its array ID
 char* get_exterior_part(uint8_t);

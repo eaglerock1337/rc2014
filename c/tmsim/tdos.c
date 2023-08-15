@@ -16,7 +16,6 @@ const char command_list[][9] = {
     "help",
     "calculate",
     "shutdown",
-    "cycle",
     "lookaway",
     "emergency",
     "inventory",
