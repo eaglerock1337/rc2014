@@ -11,21 +11,22 @@ uint8_t roll_stat(uint8_t difficulty) {
 }
 
 void roll_stats(uint8_t difficulty, struct player* p) {
-    p->intelligence = roll_stat(difficulty);
-    p->wisdom = roll_stat(difficulty);
-    p->engineering = roll_stat(difficulty);
-    p->dexterity = roll_stat(difficulty);
-    p->disguise = roll_stat(difficulty);
-    p->luck = roll_stat(difficulty);
+    for(uint8_t i = 0; i < 6; i++) {
+        p->stats[i] = roll_stat(difficulty);
+    }
 }
 
 struct player get_player(uint8_t difficulty) {
     struct player new;
-    roll_stats(difficulty, &new);
+
+    for(uint8_t i = 0; i < 6; i++) {
+        new.stats[i] = roll_stat(difficulty);
+    }
 
     new.experience = 0;
     new.level = 1;
     new.aggro = 0;
+    new.difficulty = difficulty;
 
     return new;
 }

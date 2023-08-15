@@ -4,18 +4,24 @@
 /***************************************
 * TMSim - Player header file
 ***************************************/
+
+#define INTELLIGENCE    0;
+#define WISDOM          1;
+#define ENGINEERING     2;
+#define DEXTERITY       3;
+#define DISGUISE        4;
+#define LUCK            5;
+
 struct player {
     // player stats
-    uint8_t intelligence;
-    uint8_t wisdom;
-    uint8_t engineering;
-    uint8_t dexterity;
-    uint8_t disguise;
-    uint8_t luck;
+    uint8_t stats[6];
 
     // player progress
     uint8_t experience;
     uint8_t level;    
+
+    // player threat
+    uint8_t difficulty;
     uint8_t aggro;
 };
 
