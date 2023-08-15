@@ -1,13 +1,30 @@
 #include <stdio.h>
 #include <stdint.h>
+#include <string.h>
 
 #include "tdos.h"
 #include "tm.h"
+#include "player.h"
 
 /***************************************
 * TMSim - TDOS system module
 ***************************************/
 
-void tdos_command_loop(struct time_machine* tm) {
+const char command_list[][9] = {
+    "sensors",
+    "status",
+    "help",
+    "calculate",
+    "shutdown",
+    "cycle",
+    "lookaway",
+    "emergency",
+    "inventory",
+    "player",
+    "shield",
+    "move"
+};
+
+void tdos_command_loop(struct time_machine* tm, struct player* p) {
     printf("Cow goes moo.\n");
 }
