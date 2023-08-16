@@ -8,7 +8,7 @@
 ***************************************/
 
 CHEAT_TEST(test_roll_stat,
-    for(uint8_t i = 1; i <= 5; i++) {
+    for (uint8_t i = 1; i <= 5; i++) {
         uint8_t roll = roll_stat(i);
         assert(roll > (6-i));
         assert(roll < 4 + (6-i));
@@ -16,7 +16,7 @@ CHEAT_TEST(test_roll_stat,
 );
 
 CHEAT_TEST(test_roll_stats,
-    for(int i = 1; i <= 5; i++) {
+    for (int i = 1; i <= 5; i++) {
         struct player play;
         roll_stats(i, &play);
         for(int j = 0; j < 6; j++) {
@@ -27,7 +27,7 @@ CHEAT_TEST(test_roll_stats,
 );
 
 CHEAT_TEST(test_get_player,
-    for(int i = 1; i <= 5; i++) {
+    for (int i = 1; i <= 5; i++) {
         struct player play = get_player(i);
         for(int j = 0; j < 6; i++) {
            assert(play.stats[j] > (6-i));

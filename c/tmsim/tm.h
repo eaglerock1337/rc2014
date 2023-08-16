@@ -6,6 +6,7 @@
 * TMSim - Time machine header file
 ***************************************/
 
+// basic on/off values
 #define OFF     0   // component off
 #define ON      1   // component on
 #define FAULT   2   // component fault
@@ -106,7 +107,13 @@ char* get_interior_part(uint8_t);
 // returns a computer part name based on its array ID
 char* get_computer_part(uint8_t);
 
+// set a bit or bits with the provided mask
+void set_bits(uint8_t* byte, uint8_t mask);
+
+// unset a bit or bits with the provided mask
+void unset_bits(uint8_t* byte, uint8_t mask);
+
 /****** data functions *****/
 
-// refresh the part & power status of the time machine
-void refresh_data(struct time_machine*);
+// refresh the power status of the time machine
+void refresh_power_data(struct time_machine*);

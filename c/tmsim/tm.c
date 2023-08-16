@@ -11,15 +11,15 @@
 /* Rolls a part status with a 25% variance
 *    Difficulty is on a 1-5 sliding scale:
 *    Difficulty 1 = 75-100% per part
-*    Difficulty 5 = 25-50% per part
+*    Difficulty 5 = 35-60% per part
 */
 uint8_t roll_part(uint8_t difficulty) {
     uint8_t rando = rand() % 25;
-    return rando + (6 - difficulty) * 15 + 31;
+    return rando + (6 - difficulty) * 10 + 36;
 };
 
 void roll_parts(uint8_t difficulty, struct time_machine_parts* parts) {
-    for(int i = 0; i < 6; i++) {
+    for (int i = 0; i < 6; i++) {
         parts->exterior[i] = roll_part(difficulty);
         parts->interior[i] = roll_part(difficulty);
         parts->computer[i] = roll_part(difficulty);
@@ -98,12 +98,25 @@ char* get_computer_part(uint8_t part) {
     }
 }
 
-void refresh_data(struct time_machine* tm) {
-    // this doesn't work yet...bitwise or doesn't unset a set bit
-    bool is_ready = (tm->ext_power & (EXT_READY - 1) == EXT_READY - 1);
-    uint8_t set_byte = is_ready ? EXT_READY : 0;
-    tm->ext_power = tm->ext_power | set_byte;
-    is_ready = (tm->int_power & (INT_READY - 1) == INT_READY - 1);
-    set_byte = is_ready ? INT_READY : 0;
-    tm->int_power = tm->int_power | set_byte;
+void set_bits(uint8_t* byte, uint8_t mask) {
+    *byte = *byte | mask;
+}
+
+void unset_bits(uint8_t* byte, uint8_t mask) {
+    *byte = *byte & ~mask;
+}
+
+void refresh_power_data(struct time_machine* tm) {
+    // bitwise check if lower 6 exterior power bits are set
+    if (tm->ext_power & (EXT_READY - 1) == EXT_READY - 1) {
+        set_bits(&tm->ext_power, EXT_READY);
+    } else {
+        unset_bits(&tm->ext_power, EXT_READY);
+    }
+    // bitwise check if lower 6 interior power bits ar set
+    if (tm->int_power & (INT_READY - 1) == INT_READY - 1) {
+        set_bits(&tm->int_power, INT_READY);
+    } else {
+        unset_bits(&tm->int_power, INT_READY);
+    }
 }
