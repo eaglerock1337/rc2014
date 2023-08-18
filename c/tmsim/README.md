@@ -26,6 +26,7 @@ Additional files support the game by providing data structures & helper function
 - `date.c`    - the current day and local surroundings
 - `rc2014.c`  - the time machine computer
 - `narrate.c` - game narration & dialogue
+- `event.c`   - game events and outcomes
 - `ending.c`  - the different game endings
 - `save.c`    - file load/save routines
 
