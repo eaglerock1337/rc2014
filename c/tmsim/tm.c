@@ -27,11 +27,16 @@ void roll_parts(uint8_t difficulty, struct time_machine_parts* parts) {
 };
 
 struct time_machine get_time_machine(uint8_t difficulty) {
-    struct time_machine time;
+    struct time_machine tm;
 
-    // stuff goes here.
+    roll_parts(difficulty, &tm.wear);
+    roll_parts(difficulty, &tm.tear);
 
-    return time;
+    tm.ext_power = 1;   // all on
+    tm.int_power = 1;   // all on
+    tm.energy = rand() % 250 + difficulty * 1000 - 250;
+
+    return tm;
 };
 
 // get bitwise power status of an exterior part by ID

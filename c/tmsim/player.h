@@ -6,12 +6,12 @@
 ***************************************/
 
 // stats array mappings
-#define INTELLIGENCE    0;
-#define WISDOM          1;
-#define ENGINEERING     2;
-#define DEXTERITY       3;
-#define DISGUISE        4;
-#define LUCK            5;
+#define WISDOM          0
+#define INTELLIGENCE    1
+#define ENGINEERING     2
+#define DEXTERITY       3
+#define DISGUISE        4
+#define LUCK            5
 
 struct player {
     // player stats

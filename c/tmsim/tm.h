@@ -59,11 +59,12 @@
 /***** data structures *****/
 
 struct time_machine_parts {
-    uint8_t exterior[6];
+    uint8_t exterior[6];    // 0-100 for all values
     uint8_t interior[6];
     uint8_t computer[6];
 };
 
+// could maybe optimize this later with 2-bit words
 struct time_machine_status {
     uint8_t exterior[6];
     uint8_t interior[6];
@@ -73,10 +74,11 @@ struct time_machine_status {
 struct time_machine {
     uint32_t energy;        // energy 
     uint8_t tm_status;      // main status
-    struct time_machine_status status;
-    struct time_machine_parts parts;
+    struct time_machine_parts wear;     // part wear 0-100%
+    struct time_machine_parts tear;     // part tear 0-100%
     uint8_t ext_power;      // bitwise
     uint8_t int_power;      // bitwise
+    uint8_t computer;       // power status
 };
 
 /***** init functions *****/
