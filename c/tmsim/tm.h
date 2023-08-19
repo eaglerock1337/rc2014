@@ -26,8 +26,9 @@
 #define TESLA       3
 #define FUSION      4
 #define STEAM       5
-#define EXTERIOR    6
-#define PRECHECK    7
+
+#define IS_READY    6
+#define PC_CHECK    7
 
 // interior part power values
 #define RC2014      0
@@ -36,8 +37,6 @@
 #define CIRCUITS    3
 #define SENSORS     4
 #define CONSOLE     5
-#define INTERIOR    6
-#define PRECHECK    7
 
 // exterior power bitwise vales
 #define AIRLOCK_ON  1
@@ -46,8 +45,9 @@
 #define TESLA_ON    8
 #define FUSION_ON   16
 #define STEAM_ON    32
-#define EXT_READY   64
-#define PRECHECK    128
+
+#define ALL_READY   64
+#define PC_READY    128
 
 // interior power bitwise values
 #define RC2014_ON   1
@@ -56,8 +56,6 @@
 #define CIRCUITS_ON 8
 #define SENSORS_ON  16
 #define CONSOLE_ON  32
-#define INT_READY   64
-#define PRECHECK    128
 
 /***** data structures *****/
 
