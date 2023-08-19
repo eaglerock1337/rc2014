@@ -11,8 +11,8 @@
 CHEAT_TEST(test_roll_part,
     for (int i = 1; i <= 5; i++) {
         int roll = roll_part(i);
-        assert(roll > 25 + 10 * (6-i));
-        assert(roll < 50 + 10 * (6-i));
+        assert(roll > 0 + 10 * i);
+        assert(roll < 25 + 10 * i);
     }
 );
 
@@ -21,12 +21,18 @@ CHEAT_TEST(test_roll_parts,
         struct time_machine_parts parts;
         roll_parts(i, &parts);
         for(int j = 0; j < 6; j++) {
-           assert(parts.exterior[j] > 25 + 10 * (6-i));
-           assert(parts.exterior[j] < 50 + 10 * (6-i));
-           assert(parts.interior[j] > 25 + 10 * (6-i));
-           assert(parts.interior[j] < 50 + 10 * (6-i));
-           assert(parts.computer[j] > 25 + 10 * (6-i));
-           assert(parts.computer[j] < 50 + 10 * (6-i));
+           assert(parts.exterior[j].wear > 0 + 10 * (i - 1));
+           assert(parts.exterior[j].wear < 25 + 10 * (i - 1));
+           assert(parts.exterior[j].tear > 0 + 10 * (i - 1));
+           assert(parts.exterior[j].tear < 25 + 10 * (i - 1));
+           assert(parts.interior[j].wear > 0 + 10 * (i - 1));
+           assert(parts.interior[j].wear < 25 + 10 * (i - 1));
+           assert(parts.interior[j].tear > 0 + 10 * (i - 1));
+           assert(parts.interior[j].tear < 25 + 10 * (i - 1));
+           assert(parts.computer[j].wear > 0 + 10 * (i - 1));
+           assert(parts.computer[j].wear < 25 + 10 * (i - 1));
+           assert(parts.computer[j].tear > 0 + 10 * (i - 1));
+           assert(parts.computer[j].tear < 25 + 10 * (i - 1));
         }
     }
 );

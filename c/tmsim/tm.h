@@ -9,7 +9,6 @@
 // basic on/off values
 #define OFF     0   // component off
 #define ON      1   // component on
-#define FAULT   2   // component fault
 
 #define OPEN    0   // air lock open
 #define CLOSED  1   // air lock closed
@@ -28,6 +27,7 @@
 #define FUSION      4
 #define STEAM       5
 #define EXTERIOR    6
+#define PRECHECK    7
 
 // interior part power values
 #define RC2014      0
@@ -37,6 +37,7 @@
 #define SENSORS     4
 #define CONSOLE     5
 #define INTERIOR    6
+#define PRECHECK    7
 
 // exterior power bitwise vales
 #define AIRLOCK_ON  1
@@ -46,6 +47,7 @@
 #define FUSION_ON   16
 #define STEAM_ON    32
 #define EXT_READY   64
+#define PRECHECK    128
 
 // interior power bitwise values
 #define RC2014_ON   1
@@ -55,30 +57,39 @@
 #define SENSORS_ON  16
 #define CONSOLE_ON  32
 #define INT_READY   64
+#define PRECHECK    128
 
 /***** data structures *****/
 
-struct time_machine_parts {
-    uint8_t exterior[6];    // 0-100 for all values
-    uint8_t interior[6];
-    uint8_t computer[6];
+// a single time machine part's wear & tear values
+struct time_machine_part {
+    uint8_t wear;    // part's wear value from 0-100%
+    uint8_t tear;
 };
 
-// could maybe optimize this later with 2-bit words
+// the time machine's complete part wear & tear value set
+struct time_machine_parts {
+    struct time_machine_part exterior[6];
+    struct time_machine_part interior[6];
+    struct time_machine_part computer[6];
+};
+
+
 struct time_machine_status {
-    uint8_t exterior[6];
+    // could maybe optimize this later with 2-bit words
+    uint8_t exterior[6];    
     uint8_t interior[6];
     uint8_t computer;       // single switch
 };
 
 struct time_machine {
-    uint32_t energy;        // energy 
-    uint8_t tm_status;      // main status
-    struct time_machine_parts wear;     // part wear 0-100%
-    struct time_machine_parts tear;     // part tear 0-100%
-    uint8_t ext_power;      // bitwise
-    uint8_t int_power;      // bitwise
-    uint8_t computer;       // power status
+    uint32_t energy;                    // energy 
+    uint8_t tm_status;                  // main status
+    struct time_machine_parts parts;    // wear & tear
+    struct time_machine_status status;  // display status
+    uint8_t ext_power;                  // bitwise power
+    uint8_t int_power;                  // bitwise power
+    uint8_t computer;                   // power
 };
 
 /***** init functions *****/
@@ -119,3 +130,6 @@ void unset_bits(uint8_t* byte, uint8_t mask);
 
 // refresh the power status of the time machine
 void refresh_power_data(struct time_machine*);
+
+// perform part wear on a given part id & is_outdoor boolean
+void wear_part(uint8_t, bool, struct time_machine*);

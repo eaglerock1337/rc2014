@@ -12,7 +12,10 @@ uint8_t roll_stat(uint8_t difficulty) {
 }
 
 void roll_stats(uint8_t difficulty, struct player* p) {
-    for (uint8_t i = 0; i < 6; i++) {
+    p->stats[WISDOM] = 6 - difficulty;
+    p->stats[LUCK] = 1 + 2 * difficulty;
+    // random numbers for all other stats
+    for (uint8_t i = 1; i < 5; i++) {
         p->stats[i] = roll_stat(difficulty);
     }
 }

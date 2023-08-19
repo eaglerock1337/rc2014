@@ -10,28 +10,29 @@
 
 /* Rolls a part status with a 25% variance
 *    Difficulty is on a 1-5 sliding scale:
-*    Difficulty 1 = 75-100% per part
-*    Difficulty 5 = 35-60% per part
+*    Difficulty 1 = 0-25% per part
+*    Difficulty 5 = 40-65% per part
 */
 uint8_t roll_part(uint8_t difficulty) {
     uint8_t rando = rand() % 25;
-    return rando + (6 - difficulty) * 10 + 36;
+    return rando + (difficulty - 1) * 10;
 };
 
 void roll_parts(uint8_t difficulty, struct time_machine_parts* parts) {
     for (int i = 0; i < 6; i++) {
-        parts->exterior[i] = roll_part(difficulty);
-        parts->interior[i] = roll_part(difficulty);
-        parts->computer[i] = roll_part(difficulty);
+        parts->exterior[i].wear = roll_part(difficulty);
+        parts->exterior[i].tear = roll_part(difficulty);
+        parts->interior[i].wear = roll_part(difficulty);
+        parts->interior[i].tear = roll_part(difficulty);
+        parts->computer[i].wear = roll_part(difficulty);
+        parts->computer[i].tear = roll_part(difficulty);
     }
 };
 
 struct time_machine get_time_machine(uint8_t difficulty) {
     struct time_machine tm;
 
-    roll_parts(difficulty, &tm.wear);
-    roll_parts(difficulty, &tm.tear);
-
+    roll_parts(difficulty, &tm.parts);
     tm.ext_power = 1;   // all on
     tm.int_power = 1;   // all on
     tm.energy = rand() % 250 + difficulty * 1000 - 250;
@@ -48,7 +49,8 @@ bool exterior_power(uint8_t part, uint8_t byte) {
     case TESLA:     return byte & TESLA_ON;     break;
     case FUSION:    return byte & FUSION_ON;    break;
     case STEAM:     return byte & STEAM_ON;     break;
-    case EXTERIOR:  return byte & EXT_READY;    break;
+    case IS_READY:  return byte & ALL_READY;    break;
+    case PC_CHECK:  return byte & PC_READY;     break;
     default:        return 0;   // do error stuff later
     }
 };
@@ -62,7 +64,8 @@ bool interior_power(uint8_t part, uint8_t byte) {
     case CIRCUITS:  return byte & TESLA_ON;     break;
     case SENSORS:   return byte & FUSION_ON;    break;
     case CONSOLE:   return byte & STEAM_ON;     break;
-    case INTERIOR:  return byte & EXT_READY;    break;
+    case IS_READY:  return byte & ALL_READY;    break;
+    case PC_CHECK:  return byte & PC_READY;     break;
     default:        return 0;   // do error stuff later
     }
 };
@@ -113,15 +116,26 @@ void unset_bits(uint8_t* byte, uint8_t mask) {
 
 void refresh_power_data(struct time_machine* tm) {
     // bitwise check if lower 6 exterior power bits are set
-    if (tm->ext_power & (EXT_READY - 1) == EXT_READY - 1) {
-        set_bits(&tm->ext_power, EXT_READY);
+    if (tm->ext_power & (ALL_READY - 1) == ALL_READY - 1) {
+        set_bits(&tm->ext_power, ALL_READY);
     } else {
-        unset_bits(&tm->ext_power, EXT_READY);
+        unset_bits(&tm->ext_power, ALL_READY);
     }
     // bitwise check if lower 6 interior power bits ar set
-    if (tm->int_power & (INT_READY - 1) == INT_READY - 1) {
-        set_bits(&tm->int_power, INT_READY);
+    if (tm->int_power & (ALL_READY - 1) == ALL_READY - 1) {
+        set_bits(&tm->int_power, ALL_READY);
     } else {
-        unset_bits(&tm->int_power, INT_READY);
+        unset_bits(&tm->int_power, ALL_READY);
     }
+}
+
+void wear_part(uint8_t id, bool is_ext, struct time_machine* tm) {
+    uint8_t* w[6] = &tm->wear.interior;
+    uint8_t* t[6] = &tm->tear.interior;
+    if (is_ext) { 
+        *w = &tm->wear.exterior; 
+        *t = &tm->wear.interior;
+    }
+    *w[id] = *w[id] - rand() % 5;
+    *t[id] = *t[id] - rand() % (5 * ))
 }
