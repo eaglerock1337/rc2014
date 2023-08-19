@@ -129,13 +129,57 @@ void refresh_power_data(struct time_machine* tm) {
     }
 }
 
-void wear_part(uint8_t id, bool is_ext, struct time_machine* tm) {
-    uint8_t* w[6] = &tm->wear.interior;
-    uint8_t* t[6] = &tm->tear.interior;
-    if (is_ext) { 
-        *w = &tm->wear.exterior; 
-        *t = &tm->wear.interior;
+struct time_machine_part* get_part(uint8_t id, uint8_t type, struct time_machine* tm) {
+    struct time_machine_part* part;
+
+    switch (type) {
+    case EXTERIOR:  part = &tm->parts.exterior[id];     break;
+    case INTERIOR:  part = &tm->parts.interior[id];     break;
+    case COMPUTER:  part = &tm->parts.computer[id];     break;
+    default:    printf("Something went wrong in get_part()\n");
+    };
+    return part;
+}
+
+void power_part(uint8_t id, uint8_t type, struct time_machine* tm) {
+    switch (type) {
+    case EXTERIOR:  set_bits(tm->ext_power, id);
+    case INTERIOR:  set_bits(tm->int_power, id);
+    case COMPUTER:  tm->computer = ON;
+    default:    printf("Something went wrong in set_part()\n");
+    };
+}
+
+void unpower_part(uint8_t id, uint8_t type, struct time_machine* tm) {
+    switch (type) {
+    case EXTERIOR:  unset_bits(tm->ext_power, id);
+    case INTERIOR:  unset_bits(tm->int_power, id);
+    case COMPUTER:  tm->computer = OFF;
+    default:    printf("Something went wrong in unset_part()\n");    
     }
-    *w[id] = *w[id] - rand() % 5;
-    *t[id] = *t[id] - rand() % (5 * ))
+}
+
+uint8_t get_condition(struct time_machine_part* part) {
+    return (part->wear + part-> tear * 2) / 3;
+}
+
+void wear_part(struct time_machine_part* part) {
+    part->wear += rand() % 5;
+    tear_part(part);
+}
+
+void tear_part(struct time_machine_part* part) {
+    part->tear += rand() % (5 * (part->wear / 20));
+}
+
+bool turn_on_part(uint8_t id, uint8_t type, struct time_machine* tm) {
+    struct time_machine_part* part = get_part(id, type, tm);
+    uint8_t cond = get_condition(part);
+    uint8_t chance = 9/10 * cond + 5;
+    if (rand() % 100 < chance) {
+        set_part(id, type);
+        return true;
+    } else {
+        return false;
+    }
 }

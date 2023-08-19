@@ -19,6 +19,11 @@
 #define WRN     2   // warning status
 #define FLT     3   // fault status
 
+// part types
+#define EXTERIOR    0
+#define INTERIOR    1
+#define COMPUTER    2
+
 // exterior part power values
 #define AIRLOCK     0
 #define SHIELD      1
@@ -129,5 +134,23 @@ void unset_bits(uint8_t* byte, uint8_t mask);
 // refresh the power status of the time machine
 void refresh_power_data(struct time_machine*);
 
-// perform part wear on a given part id & is_outdoor boolean
-void wear_part(uint8_t, bool, struct time_machine*);
+// get the time machine part based on its id and type
+struct time_machine_part* get_part(uint8_t, uint8_t, struct time_machine*);
+
+// turn on a part based on part id and type
+void power_part(uint8_t, uint8_t, struct time_machine*);
+
+// turn off a part based on a part id and type
+void unpower_part(uint8_t, uint8_t, struct time_machine*);
+
+// return the overall wear/tear condition of the part
+uint8_t get_condition(struct time_machine_part*);
+
+// perform wear and tear on a given part
+void wear_part(struct time_machine_part*);
+
+// perform part tear on a given part
+void tear_part(struct time_machine_part*);
+
+// attempt to turn on a part & return 1 if successful
+bool turn_on_part(uint8_t id, uint8_t type, struct time_machine* tm);
