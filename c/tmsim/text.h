@@ -20,6 +20,15 @@
 #define FAST_TDOS   6
 #define ENDING      7
 
+// delay constants
+#define DELAYLOOP   65535
+
+// delay array mappings
+const uint16_t delays[8] = {
+    255, 255, 512, 1024,
+    128, 192, 216, 64
+};
+
 // the main TDOS command loop
 void tmprint(char*, uint8_t);
 
