@@ -24,7 +24,7 @@
 #define INTERIOR    1
 #define COMPUTER    2
 
-// exterior part power values
+// exterior part status values
 #define AIRLOCK     0
 #define SHIELD      1
 #define HOVER       2
@@ -35,13 +35,21 @@
 #define IS_READY    6
 #define PC_CHECK    7
 
-// interior part power values
+// interior part status values
 #define RC2014      0
 #define POWER       1
 #define SUPPORT     2
 #define CIRCUITS    3
 #define SENSORS     4
 #define CONSOLE     5
+
+// RC2014 computer part values
+#define BACKPLANE   0
+#define CLOCK       1
+#define CPU         2
+#define MEMORY      3
+#define SERIAL_IO   4
+#define HW_BRIDGE   5
 
 // exterior power bitwise vales
 #define AIRLOCK_ON  1
@@ -137,12 +145,6 @@ void refresh_power_data(struct time_machine*);
 // get the time machine part based on its id and type
 struct time_machine_part* get_part(uint8_t, uint8_t, struct time_machine*);
 
-// turn on a part based on part id and type
-void power_part(uint8_t, uint8_t, struct time_machine*);
-
-// turn off a part based on a part id and type
-void unpower_part(uint8_t, uint8_t, struct time_machine*);
-
 // return the overall wear/tear condition of the part
 uint8_t get_condition(struct time_machine_part*);
 
@@ -152,5 +154,11 @@ void wear_part(struct time_machine_part*);
 // perform part tear on a given part
 void tear_part(struct time_machine_part*);
 
+// turn on a part based on part id and type
+void power_part(uint8_t, uint8_t, struct time_machine*);
+
 // attempt to turn on a part & return 1 if successful
 bool turn_on_part(uint8_t id, uint8_t type, struct time_machine* tm);
+
+// turn off the specified part by id and type
+void turn_off_part(uint8_t id, uint8_t type, struct time_machine* tm);
