@@ -25,9 +25,11 @@ const char command_list[][9] = {
 };
 
 void tdos_command_loop(struct time_machine* tm, struct player* p) {
-    printf("Cow goes moo.\n");
+    printf("TDOS|%s|>", print_tm_status(tm));
+    char* command;
+    scanf("%s", &command);
 }
 
 void boot(struct time_machine* tm) {
-    
+    printf("Cow goes boot.\n");
 }

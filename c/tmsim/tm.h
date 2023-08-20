@@ -137,7 +137,7 @@ void set_bits(uint8_t* byte, uint8_t mask);
 // unset a bit or bits with the provided mask
 void unset_bits(uint8_t* byte, uint8_t mask);
 
-/****** data functions *****/
+/***** data functions *****/
 
 // refresh the power status of the time machine
 void refresh_power_data(struct time_machine*);
@@ -162,3 +162,8 @@ bool turn_on_part(uint8_t id, uint8_t type, struct time_machine* tm);
 
 // turn off the specified part by id and type
 void turn_off_part(uint8_t id, uint8_t type, struct time_machine* tm);
+
+/***** print functions *****/
+
+// print the main time machine status
+char* print_tm_status(struct time_machine* tm);
