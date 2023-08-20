@@ -24,9 +24,14 @@ const char command_list[][9] = {
 };
 
 void tdos_command_loop(struct time_machine* tm, struct player* p) {
-    printf("TDOS|%s|>", print_tm_status(tm));
-    char* command;
-    scanf("%s", &command);
+    // add logic here to determine the speed of the terminal output
+    uint8_t speed = NORM_TDOS;
+    do {
+        tmprint(format("TDOS|%s|>", *print_tm_status(tm)), speed);
+        char* command;
+        scanf("%s", &command);
+        tmprint(format("You entered %s", *command), speed);
+    } while (true);
 }
 
 void boot(struct time_machine* tm) {

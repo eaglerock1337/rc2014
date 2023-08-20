@@ -165,4 +165,5 @@ void turn_off_part(uint8_t id, uint8_t type, struct time_machine* tm);
 /***** print functions *****/
 
 // print the main time machine status
-char* print_tm_status(struct time_machine* tm)
+char* print_tm_status(struct time_machine* tm);
+
