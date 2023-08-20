@@ -1,8 +1,7 @@
-#include <stdio.h>
 #include <stdint.h>
-#include <string.h>
 
 #include "tdos.h"
+#include "text.h"
 #include "tm.h"
 #include "player.h"
 
