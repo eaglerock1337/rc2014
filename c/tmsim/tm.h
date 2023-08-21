@@ -1,3 +1,6 @@
+#ifndef TM_H_
+#define TM_H_
+
 #include <stdbool.h>
 #include <stdint.h>
 
@@ -168,3 +171,5 @@ bool turn_on_part(uint8_t id, uint8_t type, struct time_machine* tm);
 
 // turn off the specified part by id and type
 void turn_off_part(uint8_t id, uint8_t type, struct time_machine* tm);
+
+#endif

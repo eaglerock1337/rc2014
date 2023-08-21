@@ -1,3 +1,6 @@
+#ifndef TEXT_H_
+#define TEXT_H_
+
 #include <stdint.h>
 
 /***************************************
@@ -33,3 +36,5 @@ void tmprint(char*, uint8_t);
 
 // delay loop for computers without a rtc
 void delay(uint16_t);
+
+#endif

@@ -1,5 +1,6 @@
 #include <stdbool.h>
 #include <stdint.h>
+#include <stdio.h>
 
 #include "tdos.h"
 #include "text.h"
@@ -28,10 +29,12 @@ void tdos_command_loop(struct time_machine* tm, struct player* p) {
     // add logic here to determine the speed of the terminal output
     uint8_t speed = NORM_TDOS;
     do {
-        tmprint(format("TDOS|%s|> ", status[tm->tm_status]), speed);
+        tmprint("TDOS|", speed);
+        tmprint((char*)status[tm->tm_status], speed);
+        tmprint("|> ", speed);
         char* command;
-        scanf("%s", &command);
-        tmprint(format("You entered %s", *command), speed);
+        scanf("%s", command);
+        tmprint("You entered " + *command, speed);
     } while (true);
 }
 
@@ -52,9 +55,11 @@ bool boot(struct time_machine* tm) {
     for (int i = 0; i < 6; i++) {
         uint8_t val = get_condition(&tm->parts.computer[i]);
         val = (val < lowest_val) ? lowest_val : val;
-        tmprint(format("%s: %s\n", get_computer_part(i), status[val]), SLOW_TDOS);
+        tmprint(get_computer_part(i) + ':' + ' ', SLOW_TDOS);
+        tmprint((char*)status[val] + '\n', SLOW_TDOS);
     }
-    tmprint("\nOverall system status: %s\n", status[lowest_val]);
+    tmprint("\nOverall system status: ", SLOW_TDOS);
+    tmprint((char*)status[lowest_val] + '\n', SLOW_TDOS);
     tm->status.computer = lowest_val;
     switch (lowest_val) {
     case NOM: tmprint("System at turbo clock speed.\n\n", FAST_TDOS);   break;

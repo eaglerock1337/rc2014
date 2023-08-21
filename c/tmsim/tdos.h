@@ -1,3 +1,6 @@
+#ifndef TDOS_H_
+#define TDOS_H_
+
 #include <stdbool.h>
 #include <stdint.h>
 
@@ -16,3 +19,5 @@ void printdos(char*, struct time_machine*);
 
 // the TDOS boot sequence
 bool boot(struct time_machine*);
+
+#endif

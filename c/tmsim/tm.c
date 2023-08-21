@@ -1,6 +1,7 @@
+#include <stdbool.h>
 #include <stdint.h>
 #include <stdio.h>
-#include <stdbool.h>
+#include <stdlib.h>
 
 #include "tm.h"
 
@@ -167,8 +168,8 @@ void tear_part(struct time_machine_part* part) {
 
 void power_part(uint8_t id, uint8_t type, struct time_machine* tm) {
     switch (type) {
-    case EXTERIOR:  set_bits(tm->ext_power, id);    break;
-    case INTERIOR:  set_bits(tm->int_power, id);    break;
+    case EXTERIOR:  set_bits(&tm->ext_power, id);    break;
+    case INTERIOR:  set_bits(&tm->int_power, id);    break;
     case COMPUTER:  tm->computer = ON;              break;
     default:    printf("Something went wrong in power_part()\n");
     };
@@ -188,8 +189,8 @@ bool turn_on_part(uint8_t id, uint8_t type, struct time_machine* tm) {
 
 void turn_off_part(uint8_t id, uint8_t type, struct time_machine* tm) {
     switch (type) {
-    case EXTERIOR:  unset_bits(tm->ext_power, id);  break;
-    case INTERIOR:  unset_bits(tm->int_power, id);  break;
+    case EXTERIOR:  unset_bits(&tm->ext_power, id);  break;
+    case INTERIOR:  unset_bits(&tm->int_power, id);  break;
     case COMPUTER:  tm->computer = OFF;             break;
     default:    printf("Something went wrong in turn_off_part()\n");    
     }
