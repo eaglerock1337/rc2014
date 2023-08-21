@@ -168,9 +168,3 @@ bool turn_on_part(uint8_t id, uint8_t type, struct time_machine* tm);
 
 // turn off the specified part by id and type
 void turn_off_part(uint8_t id, uint8_t type, struct time_machine* tm);
-
-/***** print functions *****/
-
-// print the main time machine status
-char* print_tm_status(struct time_machine* tm);
-

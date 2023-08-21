@@ -1,4 +1,5 @@
 #include <stdint.h>
+#include <stdio.h>
 #include <stdbool.h>
 
 #include "tm.h"
@@ -194,14 +195,15 @@ void turn_off_part(uint8_t id, uint8_t type, struct time_machine* tm) {
     }
 }
 
-/***** print functions *****/
-
-char* print_tm_status(struct time_machine* tm) {
-    switch (tm->tm_status) {
-    case NOM:   return "NOM";
-    case INF:   return "INF";
-    case WRN:   return "WRN";
-    case FLT:   return "FLT";
-    default:    return "Something went wrong in print_tm_status().\n";
+uint8_t get_pc_part_status(uint8_t pcid, struct time_machine* tm) {
+    uint8_t cond = get_condition(&tm->parts.computer[pcid]);
+    if (cond < 33) {
+        return NOM;
+    } else if (cond < 66) {
+        return INF;
+    } else if (cond < 100) {
+        return WRN;
+    } else {
+        return FLT;
     }
 }
