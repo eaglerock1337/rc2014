@@ -29,5 +29,7 @@ Additional files support the game by providing data structures & helper function
 - `event.c`   - game events and outcomes
 - `ending.c`  - the different game endings
 - `save.c`    - file load/save routines
+- `file.c`    - basic file management routines
+- `text.c`    - basic text printing routines
 
 I'm sure I'll have some files containing the game data unless I somehow figure out how to avoid needing to store a lot of game text.

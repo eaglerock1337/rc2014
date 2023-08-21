@@ -34,6 +34,16 @@ void tdos_command_loop(struct time_machine* tm, struct player* p) {
     } while (true);
 }
 
+void printdos(char* str) {
+    // TODO: add check here for pc health to adjust speed
+    tmprint(str, NORM_TDOS);
+}
+
 void boot(struct time_machine* tm) {
-    printf("Cow goes boot.\n");
+    tmprint("Starting TDOS boot ROM for RC2014...\n\n", SLOW_TDOS);
+    tmprint("ROM loaded successfully. Starting TDOS\n", SLOW_TDOS);
+    tmprint("system preflight health checks:\n\n", SLOW_TDOS);
+    // TODO: loop this for pc parts
+    tmprint(format("%s: %s", "Blah", "Blah"), SLOW_TDOS);
+    
 }

@@ -5,8 +5,8 @@
 *
 * This module is specifically written
 * for the RC2014, but is designed to
-* be easily rewritten or expanded for
-* other systems.
+* be easily rewritten or expanded to
+* support other systems.
 ***************************************/
 
 // text output mappings
@@ -20,7 +20,7 @@
 #define ENDING      7
 
 // delay constants
-#define DELAYLOOP   65535
+#define DELAYLOOP   65535   // TODO: verify this
 
 // delay array mappings
 const uint16_t delays[8] = {

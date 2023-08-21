@@ -13,7 +13,7 @@
 #define CLOSED  1   // air lock closed
 
 // display statuses
-#define OK      0   // nominal status
+#define NOM     0   // nominal status
 #define INF     1   // info status
 #define WRN     2   // warning status
 #define FLT     3   // fault status
@@ -68,6 +68,10 @@
 #define CIRCUITS_ON 8
 #define SENSORS_ON  16
 #define CONSOLE_ON  32
+
+/***** shared constants *****/
+
+const char* status[] = {"NOM", "INF", "WRN", "FLT"};
 
 /***** data structures *****/
 
@@ -140,6 +144,9 @@ void unset_bits(uint8_t* byte, uint8_t mask);
 
 // refresh the power status of the time machine
 void refresh_power_data(struct time_machine*);
+
+// refresh the display status for all time machine parts
+void refresh_part_status(struct time_machine*);
 
 // get the time machine part based on its id and type
 struct time_machine_part* get_part(uint8_t, uint8_t, struct time_machine*);

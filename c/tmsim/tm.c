@@ -126,12 +126,16 @@ void refresh_power_data(struct time_machine* tm) {
     } else {
         unset_bits(&tm->ext_power, ALL_READY);
     }
-    // bitwise check if lower 6 interior power bits ar set
+    // bitwise check if lower 6 interior power bits are set
     if (tm->int_power & (ALL_READY - 1) == ALL_READY - 1) {
         set_bits(&tm->int_power, ALL_READY);
     } else {
         unset_bits(&tm->int_power, ALL_READY);
     }
+}
+
+void refresh_part_status(struct time_machine* tm) {
+
 }
 
 struct time_machine_part* get_part(uint8_t id, uint8_t type, struct time_machine* tm) {
@@ -143,6 +147,7 @@ struct time_machine_part* get_part(uint8_t id, uint8_t type, struct time_machine
     case COMPUTER:  part = &tm->parts.computer[id];     break;
     default:    printf("Something went wrong in get_part()\n");
     };
+
     return part;
 }
 
@@ -166,7 +171,7 @@ void power_part(uint8_t id, uint8_t type, struct time_machine* tm) {
     case COMPUTER:  tm->computer = ON;              break;
     default:    printf("Something went wrong in power_part()\n");
     };
-}
+ }
 
 bool turn_on_part(uint8_t id, uint8_t type, struct time_machine* tm) {
     struct time_machine_part* part = get_part(id, type, tm);
@@ -193,7 +198,7 @@ void turn_off_part(uint8_t id, uint8_t type, struct time_machine* tm) {
 
 char* print_tm_status(struct time_machine* tm) {
     switch (tm->tm_status) {
-    case OK:    return "OKA";
+    case NOM:   return "NOM";
     case INF:   return "INF";
     case WRN:   return "WRN";
     case FLT:   return "FLT";
