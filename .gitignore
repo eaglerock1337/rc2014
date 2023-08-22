@@ -2,3 +2,7 @@
 disks/obsolescence
 utils/searle
 searle
+
+# C compiler stuff
+# tmsim
+*.o
