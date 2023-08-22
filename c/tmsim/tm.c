@@ -19,7 +19,7 @@
 uint8_t roll_part(uint8_t difficulty) {
     uint8_t rando = rand() % 25;
     return rando + (difficulty - 1) * 10;
-};
+}
 
 void roll_parts(uint8_t difficulty, struct time_machine_parts* parts) {
     for (int i = 0; i < 6; i++) {
@@ -30,7 +30,7 @@ void roll_parts(uint8_t difficulty, struct time_machine_parts* parts) {
         parts->computer[i].wear = roll_part(difficulty);
         parts->computer[i].tear = roll_part(difficulty);
     }
-};
+}
 
 struct time_machine get_time_machine(uint8_t difficulty) {
     struct time_machine tm;
@@ -41,7 +41,7 @@ struct time_machine get_time_machine(uint8_t difficulty) {
     tm.energy = rand() % 250 + difficulty * 1000 - 250;
 
     return tm;
-};
+}
 
 /***** helper functions *****/
 
@@ -58,7 +58,7 @@ bool get_exterior_power(uint8_t part, uint8_t byte) {
     case PC_CHECK:  return byte & PC_READY;     break;
     default:        return 0;   // do error stuff later
     }
-};
+}
 
 // get bitwise power status of an interior part by ID
 bool get_interior_power(uint8_t part, uint8_t byte) {
@@ -73,7 +73,7 @@ bool get_interior_power(uint8_t part, uint8_t byte) {
     case PC_CHECK:  return byte & PC_READY;     break;
     default:        return 0;   // do error stuff later
     }
-};
+}
 
 char* get_exterior_part(uint8_t part) {
     switch (part) {
@@ -148,7 +148,7 @@ struct time_machine_part* get_part(uint8_t id, uint8_t type, struct time_machine
     case INTERIOR:  part = &tm->parts.interior[id];     break;
     case COMPUTER:  part = &tm->parts.computer[id];     break;
     default:    printf("Something went wrong in get_part()\n");
-    };
+    }
 
     return part;
 }
@@ -172,8 +172,8 @@ void power_part(uint8_t id, uint8_t type, struct time_machine* tm) {
     case INTERIOR:  set_bits(&tm->int_power, id);    break;
     case COMPUTER:  tm->computer = ON;               break;
     default:    printf("Something went wrong in power_part()\n");
-    };
- }
+    }
+}
 
 bool turn_on_part(uint8_t id, uint8_t type, struct time_machine* tm) {
     struct time_machine_part* part = get_part(id, type, tm);
