@@ -23,10 +23,7 @@ void roll_stats(uint8_t difficulty, struct player* p) {
 struct player get_player(uint8_t difficulty) {
     struct player new;
 
-    for (uint8_t i = 0; i < 6; i++) {
-        new.stats[i] = roll_stat(difficulty);
-    }
-
+    roll_stats(difficulty, &new);
     new.experience = 0;
     new.level = 1;
     new.aggro = 0;
