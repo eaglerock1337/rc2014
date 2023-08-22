@@ -13,8 +13,10 @@
 **********************************************************/
 
 int main (void) {
-    struct player me = get_player(3);
-    struct time_machine tm = get_time_machine(3);
+    uint8_t difficulty = 5;
+    struct player me = get_player(difficulty);
+    struct time_machine tm = get_time_machine(difficulty);
+    boot(&tm);
     tdos_command_loop(&tm, &me);
     return 0;
 }

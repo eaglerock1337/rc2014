@@ -12,7 +12,7 @@
 * support other systems.
 ***************************************/
 
-// text output mappings
+// text delay mappings
 #define MAIN_MENU   0
 #define SLOW_NARR   1
 #define NORM_NARR   2

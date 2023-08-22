@@ -9,10 +9,6 @@
 * TMSim - Time machine module
 ***************************************/
 
-/***** constants *****/
-
-const char* status[] = {"NOM", "INF", "WRN", "FLT"};
-
 /***** init functions *****/
 
 /* Rolls a part status with a 25% variance
@@ -141,7 +137,7 @@ void refresh_power_data(struct time_machine* tm) {
 }
 
 void refresh_part_status(struct time_machine* tm) {
-
+    // TODO: this function
 }
 
 struct time_machine_part* get_part(uint8_t id, uint8_t type, struct time_machine* tm) {
@@ -174,7 +170,7 @@ void power_part(uint8_t id, uint8_t type, struct time_machine* tm) {
     switch (type) {
     case EXTERIOR:  set_bits(&tm->ext_power, id);    break;
     case INTERIOR:  set_bits(&tm->int_power, id);    break;
-    case COMPUTER:  tm->computer = ON;              break;
+    case COMPUTER:  tm->computer = ON;               break;
     default:    printf("Something went wrong in power_part()\n");
     };
  }
@@ -200,8 +196,7 @@ void turn_off_part(uint8_t id, uint8_t type, struct time_machine* tm) {
     }
 }
 
-uint8_t get_pc_part_status(uint8_t pcid, struct time_machine* tm) {
-    uint8_t cond = get_condition(&tm->parts.computer[pcid]);
+uint8_t get_part_status(uint8_t cond) {
     if (cond < 33) {
         return NOM;
     } else if (cond < 66) {
@@ -215,6 +210,12 @@ uint8_t get_pc_part_status(uint8_t pcid, struct time_machine* tm) {
 
 /***** print functions *****/
 
-char* statusdisp(uint8_t id) {
-    return (char*)status[id];
+char* status_disp(uint8_t id) {
+    switch (id) {
+    case 0:     return "NOM";   break;
+    case 1:     return "INF";   break;
+    case 2:     return "WRN";   break;
+    case 3:     return "FLT";   break;
+    default:    printf("Something went wrong in statusdisp()");
+    }
 }

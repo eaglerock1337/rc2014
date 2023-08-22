@@ -168,9 +168,12 @@ bool turn_on_part(uint8_t, uint8_t, struct time_machine*);
 // turn off the specified part by id and type
 void turn_off_part(uint8_t, uint8_t, struct time_machine*);
 
+// get the part status of a given overall part wear status from 0-100
+uint8_t get_part_status(uint8_t);
+
 /***** print functions *****/
 
 // return the status display for the given status id
-char* statusdisp(uint8_t);
+char* status_disp(uint8_t);
 
 #endif

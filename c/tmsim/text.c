@@ -9,8 +9,8 @@
 
 // delay array mappings
 const uint16_t delays[8] = {
-    255, 255, 512, 1024,
-    128, 192, 216, 64
+    512, 1024, 512, 256,
+    512, 256, 192, 2048
 };
 
 void tmprint(char* str, uint8_t type) {
