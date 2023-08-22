@@ -16,4 +16,5 @@ int main (void) {
     struct player me = get_player(3);
     struct time_machine tm = get_time_machine(3);
     tdos_command_loop(&tm, &me);
+    return 0;
 }

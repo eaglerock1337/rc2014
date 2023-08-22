@@ -25,13 +25,7 @@
 // delay constants
 #define DELAYLOOP   65535   // TODO: verify this
 
-// delay array mappings
-const uint16_t delays[8] = {
-    255, 255, 512, 1024,
-    128, 192, 216, 64
-};
-
-// the main TDOS command loop
+// print the provided game text at the provided speed
 void tmprint(char*, uint8_t);
 
 // delay loop for computers without a rtc

@@ -30,7 +30,7 @@ void tdos_command_loop(struct time_machine* tm, struct player* p) {
     uint8_t speed = NORM_TDOS;
     do {
         tmprint("TDOS|", speed);
-        tmprint((char*)status[tm->tm_status], speed);
+        tmprint(statusdisp(tm->tm_status), speed);
         tmprint("|> ", speed);
         char* command;
         scanf("%s", command);
@@ -56,10 +56,10 @@ bool boot(struct time_machine* tm) {
         uint8_t val = get_condition(&tm->parts.computer[i]);
         val = (val < lowest_val) ? lowest_val : val;
         tmprint(get_computer_part(i) + ':' + ' ', SLOW_TDOS);
-        tmprint((char*)status[val] + '\n', SLOW_TDOS);
+        tmprint(statusdisp(val) + '\n', SLOW_TDOS);
     }
     tmprint("\nOverall system status: ", SLOW_TDOS);
-    tmprint((char*)status[lowest_val] + '\n', SLOW_TDOS);
+    tmprint(statusdisp(lowest_val) + '\n', SLOW_TDOS);
     tm->status.computer = lowest_val;
     switch (lowest_val) {
     case NOM: tmprint("System at turbo clock speed.\n\n", FAST_TDOS);   break;

@@ -9,6 +9,10 @@
 * TMSim - Time machine module
 ***************************************/
 
+/***** constants *****/
+
+const char* status[] = {"NOM", "INF", "WRN", "FLT"};
+
 /***** init functions *****/
 
 /* Rolls a part status with a 25% variance
@@ -207,4 +211,10 @@ uint8_t get_pc_part_status(uint8_t pcid, struct time_machine* tm) {
     } else {
         return FLT;
     }
+}
+
+/***** print functions *****/
+
+char* statusdisp(uint8_t id) {
+    return (char*)status[id];
 }

@@ -72,10 +72,6 @@
 #define SENSORS_ON  16
 #define CONSOLE_ON  32
 
-/***** shared constants *****/
-
-const char* status[] = {"NOM", "INF", "WRN", "FLT"};
-
 /***** data structures *****/
 
 // a single time machine part's wear & tear values
@@ -167,9 +163,14 @@ void tear_part(struct time_machine_part*);
 void power_part(uint8_t, uint8_t, struct time_machine*);
 
 // attempt to turn on a part & return 1 if successful
-bool turn_on_part(uint8_t id, uint8_t type, struct time_machine* tm);
+bool turn_on_part(uint8_t, uint8_t, struct time_machine*);
 
 // turn off the specified part by id and type
-void turn_off_part(uint8_t id, uint8_t type, struct time_machine* tm);
+void turn_off_part(uint8_t, uint8_t, struct time_machine*);
+
+/***** print functions *****/
+
+// return the status display for the given status id
+char* statusdisp(uint8_t);
 
 #endif

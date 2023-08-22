@@ -7,6 +7,12 @@
 * TMSim - Text management module
 ***************************************/
 
+// delay array mappings
+const uint16_t delays[8] = {
+    255, 255, 512, 1024,
+    128, 192, 216, 64
+};
+
 void tmprint(char* str, uint8_t type) {
     for (uint8_t i = 0; i < strlen(str); i++) {
         putc(str[i], stdout);
