@@ -16,6 +16,7 @@ const uint16_t delays[8] = {
 void tmprint(char* str, uint8_t type) {
     for (uint8_t i = 0; i < strlen(str); i++) {
         putc(str[i], stdout);
+        fflush(stdout);         // flush stdout buffer
         delay(delays[type]);
     }
 }

@@ -32,10 +32,11 @@ void tdos_command_loop(struct time_machine* tm, struct player* p) {
         tmprint("TDOS|", speed);
         tmprint(statusdisp(tm->tm_status), speed);
         tmprint("|> ", speed);
-        char* command;
+        char command[20];
         scanf("%s", command);
         tmprint("You entered ", speed);
         tmprint(command, speed);
+        tmprint("\n", speed);
     } while (true);
 }
 
