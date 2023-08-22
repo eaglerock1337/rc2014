@@ -50,7 +50,7 @@ struct time_machine get_time_machine(uint8_t difficulty) {
 /***** helper functions *****/
 
 // get bitwise power status of an exterior part by ID
-bool exterior_power(uint8_t part, uint8_t byte) {
+bool get_exterior_power(uint8_t part, uint8_t byte) {
     switch (part) {
     case AIRLOCK:   return byte & AIRLOCK_ON;   break;
     case SHIELD:    return byte & SHIELD_ON;    break;
@@ -65,7 +65,7 @@ bool exterior_power(uint8_t part, uint8_t byte) {
 };
 
 // get bitwise power status of an interior part by ID
-bool interior_power(uint8_t part, uint8_t byte) {
+bool get_interior_power(uint8_t part, uint8_t byte) {
     switch (part) {
     case RC2014:    return byte & RC2014;       break;
     case POWER:     return byte & SHIELD_ON;    break;

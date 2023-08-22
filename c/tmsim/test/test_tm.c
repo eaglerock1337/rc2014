@@ -14,7 +14,7 @@ CHEAT_TEST(test_roll_part,
         assert(roll > 0 + 10 * i);
         assert(roll < 25 + 10 * i);
     }
-);
+)
 
 CHEAT_TEST(test_roll_parts,
     for (int i = 1; i <= 5; i++) {
@@ -35,23 +35,23 @@ CHEAT_TEST(test_roll_parts,
            assert(parts.computer[j].tear < 25 + 10 * (i - 1));
         }
     }
-);
+)
 
 CHEAT_TEST(test_get_time_machine,
     for (int i = 1; i <= 5; i++) {
         // pass
     }
-);
+)
 
-CHEAT_TEST(test_exterior_power,
+CHEAT_TEST(test_get_exterior_power,
     for (int i = 0; i <= 6; i++) {
-        assert(exterior_power(i, 0xFF) == 2*i);
+        assert(get_exterior_power(i, 0xFF) == true);
     }
-);
+)
 
-CHEAT_TEST(test_interior_power,
+CHEAT_TEST(test_get_interior_power,
     for (int i = 0; i <= 6; i++) {
-        assert(interior_power(i, 0xFF) == 2*i);
+        assert(get_interior_power(i, 0xFF) == true);
     }
-);
+)
 

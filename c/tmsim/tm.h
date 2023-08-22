@@ -119,10 +119,10 @@ struct time_machine get_time_machine(uint8_t);
 /***** helper functions *****/
 
 // get bitwise power status of an exterior part by ID
-bool get_exterior_power(uint8_t);
+bool get_exterior_power(uint8_t, uint8_t);
 
 // get bitwise power status of an interior part by ID
-bool get_interior_power(uint8_t);
+bool get_interior_power(uint8_t, uint8_t);
 
 // returns an exterior part name based on its array ID
 char* get_exterior_part(uint8_t);

@@ -12,4 +12,4 @@
 CHEAT_TEST(test,
     // TODO: better test
     assert(true);
-);
+)

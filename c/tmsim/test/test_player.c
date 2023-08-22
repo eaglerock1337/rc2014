@@ -13,7 +13,7 @@ CHEAT_TEST(test_roll_stat,
         assert(roll > (6-i));
         assert(roll < 4 + (6-i));
     }
-);
+)
 
 CHEAT_TEST(test_roll_stats,
     for (int i = 1; i <= 5; i++) {
@@ -24,7 +24,7 @@ CHEAT_TEST(test_roll_stats,
            assert(play.stats[j] < 4 + (6-i));
         }
     }
-);
+)
 
 CHEAT_TEST(test_get_player,
     for (int i = 1; i <= 5; i++) {
@@ -38,4 +38,4 @@ CHEAT_TEST(test_get_player,
         assert(play.aggro = 0);
         assert(play.difficulty = i);
     }
-);
+)
