@@ -1,9 +1,11 @@
+# standard gcc (or similar compiler) files
 OFILES=tmsim.o tm.o tdos.o player.o text.o
 CFILES=tmsim.c tm.c tdos.c player.c text.c
 HFILES=        tm.h tdos.h player.h text.h
-ZFILES=tmsim_BSS.bin tmsim_CODE.bin tmsim.ihx tmsim.bin
+# z88dk/sdcc compiler files for rc2014
+ZFILES=tmsim.ihx tmsim_BSS.bin tmsim_CODE.bin
 
-tmsim:  $(OFILES)
+build:  $(OFILES)
 	gcc -o tmsim $(OFILES) 
 
 rcbuild: $(OFILES)

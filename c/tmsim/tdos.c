@@ -26,12 +26,14 @@ const char command_list[][10] = {
 };
 
 void tdos_command_loop(struct time_machine* tm, struct player* p) {
-    // add logic here to determine the speed of the terminal output
+    // TODO: add chance for system to reset (once a reset operation is created)
+    // TODO: add logic here to determine the speed of the terminal output
     uint8_t speed = NORM_TDOS;
     do {
         refresh_part_status(tm);
         refresh_power_data(tm);
         tmprint("TDOS|", speed);
+        printf("%i", tm->tm_status);
         tmprint(status_disp(tm->tm_status), speed);
         tmprint("|> ", speed);
         char command[20];
@@ -53,12 +55,13 @@ void printdos(char* str, struct time_machine* tm) {
 
 bool boot(struct time_machine* tm) {
     tmprint("Starting TDOS boot ROM for RC2014...\n\n", SLOW_TDOS);
-    delay(1024);
+    delay(4096);
     tmprint("ROM loaded successfully. Starting\n", SLOW_TDOS);
     tmprint("TDOS system health checks:\n\n", SLOW_TDOS);
-    delay(512);
+    delay(2048);
     uint8_t worst_val = 0;
     for (int i = 0; i < 6; i++) {
+        printf("%i %i", tm->parts.computer[i].wear, tm->parts.computer[i].tear);
         uint8_t val = get_condition(&tm->parts.computer[i]);
         worst_val = (val > worst_val) ? val : worst_val;
         tmprint(get_computer_part(i), SLOW_TDOS);

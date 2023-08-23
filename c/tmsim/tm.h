@@ -113,8 +113,8 @@ uint8_t roll_part(uint8_t);
 // roll time machine part stats based on a 1-5 difficulty
 void roll_parts(uint8_t, struct time_machine_parts*);
 
-// main time machine data structure
-struct time_machine* get_time_machine(uint8_t);
+// new game time machine initialization routine
+void initialize_tm(uint8_t, struct time_machine*);
 
 /***** helper functions *****/
 

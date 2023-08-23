@@ -32,16 +32,11 @@ void roll_parts(uint8_t difficulty, struct time_machine_parts* parts) {
     }
 }
 
-struct time_machine* get_time_machine(uint8_t difficulty) {
-    struct time_machine tm;
-    struct time_machine* ptr;
-
-    roll_parts(difficulty, &tm.parts);
-    tm.ext_power = 1;   // all on
-    tm.int_power = 1;   // all on
-    tm.energy = rand() % 250 + difficulty * 1000 - 250;
-
-    return ptr;
+void initialize_tm(uint8_t difficulty, struct time_machine* tm) {
+    roll_parts(difficulty, &(tm->parts));
+    tm->ext_power = 1;      // all on
+    tm->int_power = 1;      // all on
+    tm->energy = rand() % 250 + difficulty * 1000 - 250;
 }
 
 /***** helper functions *****/
