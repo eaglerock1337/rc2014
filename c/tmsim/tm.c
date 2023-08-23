@@ -118,13 +118,13 @@ void unset_bits(uint8_t* byte, uint8_t mask) {
 /***** data functions *****/
 
 void refresh_power_data(struct time_machine* tm) {
-    // bitwise check if lower 6 exterior power bits are set
+    // bitwise check if lower 6 exterior power bits are set (7th bit - 1)
     if (tm->ext_power & (ALL_READY - 1) == ALL_READY - 1) {
         set_bits(&tm->ext_power, ALL_READY);
     } else {
         unset_bits(&tm->ext_power, ALL_READY);
     }
-    // bitwise check if lower 6 interior power bits are set
+    // bitwise check if lower 6 interior power bits are set (7th bit - 1)
     if (tm->int_power & (ALL_READY - 1) == ALL_READY - 1) {
         set_bits(&tm->int_power, ALL_READY);
     } else {
@@ -133,7 +133,17 @@ void refresh_power_data(struct time_machine* tm) {
 }
 
 void refresh_part_status(struct time_machine* tm) {
-    // TODO: this function
+    uint8_t worst = NOM;
+    uint8_t cond;
+    for (uint8_t i = 0; i < 6; i++) {
+        cond = get_part_status(get_condition(get_part(i, EXTERIOR, tm)));
+        tm->status.exterior[i] = cond;
+        worst = cond > worst ? cond : worst;
+        cond = get_part_status(get_condition(get_part(i, INTERIOR, tm)));
+        tm->status.interior[i] = cond;
+        worst = cond > worst ? cond : worst;
+    }
+    tm->tm_status = worst;
 }
 
 struct time_machine_part* get_part(uint8_t id, uint8_t type, struct time_machine* tm) {
@@ -151,6 +161,18 @@ struct time_machine_part* get_part(uint8_t id, uint8_t type, struct time_machine
 
 uint8_t get_condition(struct time_machine_part* part) {
     return (part->wear + part-> tear * 2) / 3;
+}
+
+uint8_t get_part_status(uint8_t cond) {
+    if (cond < 33) {
+        return NOM;
+    } else if (cond < 66) {
+        return INF;
+    } else if (cond < 100) {
+        return WRN;
+    } else {
+        return FLT;
+    }
 }
 
 void wear_part(struct time_machine_part* part) {
@@ -189,18 +211,6 @@ void turn_off_part(uint8_t id, uint8_t type, struct time_machine* tm) {
     case INTERIOR:  unset_bits(&tm->int_power, id);  break;
     case COMPUTER:  tm->computer = OFF;             break;
     default:    printf("Something went wrong in turn_off_part()\n");    
-    }
-}
-
-uint8_t get_part_status(uint8_t cond) {
-    if (cond < 33) {
-        return NOM;
-    } else if (cond < 66) {
-        return INF;
-    } else if (cond < 100) {
-        return WRN;
-    } else {
-        return FLT;
     }
 }
 

@@ -15,7 +15,7 @@
 void tdos_command_loop(struct time_machine*, struct player*);
 
 // TDOS module print routine
-void printdos(char*, struct time_machine*);
+void printdos(char*, uint8_t);
 
 // the TDOS boot sequence
 bool boot(struct time_machine*);

@@ -76,27 +76,27 @@
 
 // a single time machine part's wear & tear values
 struct time_machine_part {
-    uint8_t wear;    // part's wear value from 0-100%
-    uint8_t tear;
+    uint8_t wear;       // part's wear value from 0-100%
+    uint8_t tear;       // part's tear value from 0-100%
 };
 
 // the time machine's complete part wear & tear value set
 struct time_machine_parts {
-    struct time_machine_part exterior[6];
-    struct time_machine_part interior[6];
-    struct time_machine_part computer[6];
+    struct time_machine_part exterior[6];   // exterior part value array
+    struct time_machine_part interior[6];   // interior part value array
+    struct time_machine_part computer[6];   // computer part value array
 };
 
 
 struct time_machine_status {
-    // could maybe optimize this later with 2-bit words
-    uint8_t exterior[6];    
+    // could maybe optimize this later with 2 2-bit words
+    uint8_t exterior[6];    // 6 exterior part values
     uint8_t interior[6];
     uint8_t computer;       // single switch
 };
 
 struct time_machine {
-    uint32_t energy;                    // energy 
+    uint32_t energy;                    // total energy in kJ
     uint8_t tm_status;                  // main status
     struct time_machine_parts parts;    // wear & tear
     struct time_machine_status status;  // display status
@@ -153,6 +153,9 @@ struct time_machine_part* get_part(uint8_t, uint8_t, struct time_machine*);
 // return the overall wear/tear condition of the part
 uint8_t get_condition(struct time_machine_part*);
 
+// get the part status of a given overall part wear status from 0-100
+uint8_t get_part_status(uint8_t);
+
 // perform wear and tear on a given part
 void wear_part(struct time_machine_part*);
 
@@ -167,9 +170,6 @@ bool turn_on_part(uint8_t, uint8_t, struct time_machine*);
 
 // turn off the specified part by id and type
 void turn_off_part(uint8_t, uint8_t, struct time_machine*);
-
-// get the part status of a given overall part wear status from 0-100
-uint8_t get_part_status(uint8_t);
 
 /***** print functions *****/
 

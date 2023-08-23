@@ -38,3 +38,10 @@ void roll_stats(uint8_t, struct player*);
 void initialize_player(uint8_t, struct player*);
 
 #endif
+
+/* Idea TODOs:
+*   TODO: add routines for specific wisdom point checkpoints
+*   TODO: add routines for other points as well (e.g. engineering)
+*   TODO: in events.h, make sure to add routines for one-time
+*           events inside every-time events
+*/
