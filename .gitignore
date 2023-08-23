@@ -6,3 +6,7 @@ searle
 # C compiler stuff
 # tmsim
 *.o
+*.bin
+*.com
+*.ihx
+c/tmsim/tmsim

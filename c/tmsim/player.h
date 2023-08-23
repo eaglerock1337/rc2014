@@ -35,6 +35,6 @@ uint8_t roll_stat(uint8_t);
 void roll_stats(uint8_t, struct player*);
 
 // get a player struct with initialized stats
-struct player get_player(uint8_t);
+struct player* get_player(uint8_t);
 
 #endif

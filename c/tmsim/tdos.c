@@ -11,7 +11,7 @@
 * TMSim - TDOS system module
 ***************************************/
 
-const char command_list[][9] = {
+const char command_list[][10] = {
     "sensors",
     "status",
     "help",

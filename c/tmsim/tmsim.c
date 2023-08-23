@@ -14,9 +14,9 @@
 
 int main (void) {
     uint8_t difficulty = 5;
-    struct player me = get_player(difficulty);
-    struct time_machine tm = get_time_machine(difficulty);
-    boot(&tm);
-    tdos_command_loop(&tm, &me);
+    struct player* me = get_player(difficulty);
+    struct time_machine* tm = get_time_machine(difficulty);
+    boot(tm);
+    tdos_command_loop(tm, me);
     return 0;
 }

@@ -20,15 +20,16 @@ void roll_stats(uint8_t difficulty, struct player* p) {
     }
 }
 
-struct player get_player(uint8_t difficulty) {
+struct player* get_player(uint8_t difficulty) {
     struct player new;
-
-    roll_stats(difficulty, &new);
+    struct player* ptr = &new;
+    
+    roll_stats(difficulty, ptr);
     new.experience = 0;
     new.level = 1;
     new.aggro = 0;
     new.difficulty = difficulty;
 
-    return new;
+    return ptr;
 }
 

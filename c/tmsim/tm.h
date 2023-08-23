@@ -114,7 +114,7 @@ uint8_t roll_part(uint8_t);
 void roll_parts(uint8_t, struct time_machine_parts*);
 
 // main time machine data structure
-struct time_machine get_time_machine(uint8_t);
+struct time_machine* get_time_machine(uint8_t);
 
 /***** helper functions *****/
 

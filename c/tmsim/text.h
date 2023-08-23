@@ -23,7 +23,11 @@
 #define ENDING      7
 
 // delay constants
-#define DELAYLOOP   65535   // TODO: verify this
+#ifdef RC
+#define DELAYLOOP   8
+#else
+#define DELAYLOOP   65535
+#endif
 
 // print the provided game text at the provided speed
 void tmprint(char*, uint8_t);
