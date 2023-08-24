@@ -36,7 +36,7 @@
 #define CMD_DEBUG       TOTAL_CMD - 1
 #endif
 
-const static char* cmd_list[] = {
+static char* cmd_list[] = {
     "status"
     "lookaway",
     "date",
