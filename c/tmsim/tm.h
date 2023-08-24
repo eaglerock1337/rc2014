@@ -116,7 +116,7 @@ void roll_parts(uint8_t, struct time_machine_parts*);
 // new game time machine initialization routine
 void initialize_tm(uint8_t, struct time_machine*);
 
-/***** helper functions *****/
+/***** bitwise helper functions *****/
 
 // get bitwise power status of an exterior part by ID
 bool get_exterior_power(uint8_t, uint8_t);
@@ -124,28 +124,21 @@ bool get_exterior_power(uint8_t, uint8_t);
 // get bitwise power status of an interior part by ID
 bool get_interior_power(uint8_t, uint8_t);
 
-// returns an exterior part name based on its array ID
-char* get_exterior_part(uint8_t);
-
-// returns an interior part name based on its array ID
-char* get_interior_part(uint8_t);
-
-// returns a computer part name based on its array ID
-char* get_computer_part(uint8_t);
-
 // set a bit or bits with the provided mask
 void set_bits(uint8_t* byte, uint8_t mask);
 
 // unset a bit or bits with the provided mask
 void unset_bits(uint8_t* byte, uint8_t mask);
 
-/***** data functions *****/
+/***** data refresh functions *****/
 
 // refresh the power status of the time machine
 void refresh_power_data(struct time_machine*);
 
 // refresh the display status for all time machine parts
 void refresh_part_status(struct time_machine*);
+
+/***** data retrieval functions *****/
 
 // get the time machine part based on its id and type
 struct time_machine_part* get_part(uint8_t, uint8_t, struct time_machine*);
@@ -155,6 +148,8 @@ uint8_t get_condition(struct time_machine_part*);
 
 // get the part status of a given overall part wear status from 0-100
 uint8_t get_part_status(uint8_t);
+
+/***** data manipulation routines *****/
 
 // perform wear and tear on a given part
 void wear_part(struct time_machine_part*);
@@ -172,6 +167,15 @@ bool turn_on_part(uint8_t, uint8_t, struct time_machine*);
 void turn_off_part(uint8_t, uint8_t, struct time_machine*);
 
 /***** print functions *****/
+
+// returns an exterior part name based on its array ID
+char* get_exterior_part(uint8_t);
+
+// returns an interior part name based on its array ID
+char* get_interior_part(uint8_t);
+
+// returns a computer part name based on its array ID
+char* get_computer_part(uint8_t);
 
 // return the status display for the given status id
 char* status_disp(uint8_t);

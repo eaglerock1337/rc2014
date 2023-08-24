@@ -6,10 +6,10 @@
 /***************************************
 * TMSim - Text management header file
 *
-* This module is specifically written
-* for the RC2014, but is designed to
-* be easily rewritten or expanded to
-* support other systems.
+* This module currently supports the
+* RC2014 and modern systems, but can
+* be expanded to support more systems
+* and features (such as RTC support).
 ***************************************/
 
 // text delay mappings
@@ -22,12 +22,25 @@
 #define FAST_TDOS   6
 #define ENDING      7
 
-// delay constants
+// delay array mappings
+static const uint16_t delays[8] = {
+    512, 1024, 512, 256,
+    512, 256, 192, 2048
+};
+
+// delay loop constant
 #ifdef RC
 #define DELAYLOOP   8
 #else
 #define DELAYLOOP   65535
 #endif
+// TODO: sync the delay loop to 1ms and add RTC delay support,
+//       then integrate both into a single delay function
+
+// print buffer shared by all modules
+#define PRINT_BUF   64
+static char print_buffer[PRINT_BUF];    // reasonable width?
+static char* print = print_buffer;      // 64-char print buffer
 
 // print the provided game text at the provided speed
 void tmprint(char*, uint8_t);

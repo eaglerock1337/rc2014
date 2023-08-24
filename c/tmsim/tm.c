@@ -39,7 +39,7 @@ void initialize_tm(uint8_t difficulty, struct time_machine* tm) {
     tm->energy = rand() % 250 + difficulty * 1000 - 250;
 }
 
-/***** helper functions *****/
+/***** bitwise helper functions *****/
 
 // get bitwise power status of an exterior part by ID
 bool get_exterior_power(uint8_t part, uint8_t byte) {
@@ -71,42 +71,6 @@ bool get_interior_power(uint8_t part, uint8_t byte) {
     }
 }
 
-char* get_exterior_part(uint8_t part) {
-    switch (part) {
-    case 0:     return "Time Machine Airlock";  break;
-    case 1:     return "Insibility Shield";     break;
-    case 2:     return "Hover Propulsion";      break;
-    case 3:     return "Tesla Charging Coil";   break;
-    case 4:     return "Mr Fusion Reactor";     break;
-    case 5:     return "Steam Charging Unit";   break;
-    default:    return "Something went wrong";
-    }
-}
-
-char* get_interior_part(uint8_t part) {
-    switch (part) {
-    case 0:     return "Main Energy Cells";     break;
-    case 1:     return "Power Distrib. Unit";   break;
-    case 2:     return "Life Support System";   break;
-    case 3:     return "Time Travel Circuits";  break;
-    case 4:     return "Threat Sensor System";  break;
-    case 5:     return "Time Machine Console";  break;
-    default:    return "Something went wrong";
-    }
-}
-
-char* get_computer_part(uint8_t part) {
-    switch (part) {
-    case 0:     return "System Backplane";      break;
-    case 1:     return "Dual System Clock";     break;
-    case 2:     return "Z80 Processor Board";   break;
-    case 3:     return "RAM/ROM Memory Unit";   break;
-    case 4:     return "Dual Serial I/O";       break;
-    case 5:     return "TM Hardware Bridge";    break;
-    default:    return "Something went wrong";
-    }
-}
-
 void set_bits(uint8_t* byte, uint8_t mask) {
     *byte = *byte | mask;
 }
@@ -115,7 +79,7 @@ void unset_bits(uint8_t* byte, uint8_t mask) {
     *byte = *byte & ~mask;
 }
 
-/***** data functions *****/
+/***** data refresh functions *****/
 
 void refresh_power_data(struct time_machine* tm) {
     // bitwise check if lower 6 exterior power bits are set (7th bit - 1)
@@ -146,6 +110,8 @@ void refresh_part_status(struct time_machine* tm) {
     tm->tm_status = worst;
 }
 
+/***** data retrieval functions *****/
+
 struct time_machine_part* get_part(uint8_t id, uint8_t type, struct time_machine* tm) {
     struct time_machine_part* part;
 
@@ -174,6 +140,8 @@ uint8_t get_part_status(uint8_t cond) {
         return FLT;
     }
 }
+
+/***** data manipulation routines *****/
 
 void wear_part(struct time_machine_part* part) {
     part->wear += rand() % 5;
@@ -215,6 +183,42 @@ void turn_off_part(uint8_t id, uint8_t type, struct time_machine* tm) {
 }
 
 /***** print functions *****/
+
+char* get_exterior_part(uint8_t part) {
+    switch (part) {
+    case 0:     return "Time Machine Airlock";  break;
+    case 1:     return "Insibility Shield";     break;
+    case 2:     return "Hover Propulsion";      break;
+    case 3:     return "Tesla Charging Coil";   break;
+    case 4:     return "Mr Fusion Reactor";     break;
+    case 5:     return "Steam Charging Unit";   break;
+    default:    return "Something went wrong";
+    }
+}
+
+char* get_interior_part(uint8_t part) {
+    switch (part) {
+    case 0:     return "Main Energy Cells";     break;
+    case 1:     return "Power Distrib. Unit";   break;
+    case 2:     return "Life Support System";   break;
+    case 3:     return "Time Travel Circuits";  break;
+    case 4:     return "Threat Sensor System";  break;
+    case 5:     return "Time Machine Console";  break;
+    default:    return "Something went wrong";
+    }
+}
+
+char* get_computer_part(uint8_t part) {
+    switch (part) {
+    case 0:     return "System Backplane";      break;
+    case 1:     return "Dual System Clock";     break;
+    case 2:     return "Z80 Processor Board";   break;
+    case 3:     return "RAM/ROM Memory Unit";   break;
+    case 4:     return "Dual Serial I/O";       break;
+    case 5:     return "TM Hardware Bridge";    break;
+    default:    return "Something went wrong";
+    }
+}
 
 char* status_disp(uint8_t id) {
     switch (id) {
