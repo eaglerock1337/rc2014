@@ -177,3 +177,14 @@ void turn_off_part(uint8_t, uint8_t, struct time_machine*);
 char* status_disp(uint8_t);
 
 #endif
+
+/* Time Machine TODOs
+*   TODO: minimum energy amount for stuff:
+*       25kj minimum for base for 1 hour
+*       25kj minimum for TDOS for 1 hour
+*       1gj for time travel
+*   Time travel formula:
+*   Energy = Years ^ 2 / 4300 + 1
+*       30 years = 1.21gj - because it has to, obviously
+*   TODO: time travel routine has a max gj rating check
+*/

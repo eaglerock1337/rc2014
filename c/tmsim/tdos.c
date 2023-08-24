@@ -36,7 +36,7 @@ void tdos_command_loop(struct time_machine* tm, struct player* p) {
         printdos("|> ", speed);
         char command[20];
         scanf("%s", command);
-        printdos("You entered ", speed);
+        printdos("\nYou entered ", speed);
         printdos(command, speed);
         printdos("\n", speed);
     } while (true);
