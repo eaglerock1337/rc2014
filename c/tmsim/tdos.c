@@ -61,9 +61,9 @@ uint8_t check_cmd(char *s) {
 
 void printarr(char* strarr[], uint8_t speed) {
     // TODO: figure out a better way to do printing through the tmprint routine
-    for (int i = 0; i < sizeof(*strarr)/sizeof(*strarr[0]); i++) {
-        printdos(strarr[i], speed);
-    }
+    // for (int i = 0; i < sizeof(strarr)/sizeof(strarr[0]); i++) {
+    //     printdos(strarr[i], speed);
+    // }
 }
 
 void printdos(char* str, uint8_t speed) {
