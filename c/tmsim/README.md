@@ -11,6 +11,7 @@ I'll tell you a story all about it later.
 |0.0.0|8/13/23|current attempt start date|
 |0.0.1|8/23/23|basic printloop compiling for both x64 and Z80 systems|
 |0.0.2|8/24/23|proper string I/O buffers|
+|0.0.3|||
 
 ## architecture
 
@@ -35,6 +36,6 @@ Additional files support the game by providing data structures & helper function
 - `intro.c`   - the game introduction & dialogue
 - `ending.c`  - the different game endings
 - `save.c`    - file load/save routines
-- `text.c`    - low-level text printing & text file routines for 
+- `text.c`    - base-level text print routines
 
 I'm sure I'll have some files containing the game data unless I somehow figure out how to avoid needing to store a lot of game text.

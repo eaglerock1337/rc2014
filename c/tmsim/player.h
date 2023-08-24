@@ -26,6 +26,9 @@ struct player {
     // player threat
     uint8_t difficulty;
     uint8_t aggro;
+
+    // TODO: add "current view" variable for tracking
+    //       where player is in simulation
 };
 
 // rolls a single stat based on a 1-5 difficulty
