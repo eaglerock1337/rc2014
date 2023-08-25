@@ -10,6 +10,7 @@ build:  $(OFILES)
 
 rcbuild: $(OFILES)
 	docker run -v ${PWD}:/src/ -it z88dk/z88dk zcc +rc2014 -subtype=cpm -clib=new -SO3 -create-app -DRC -o tmsim $(CFILES)
+	sudo chown $(USERNAME):$(USERNAME) tmsim*
 	mv tmsim.bin tmsim.com
 
 clean:

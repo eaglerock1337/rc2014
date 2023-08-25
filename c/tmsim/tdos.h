@@ -27,17 +27,15 @@
 #define CMD_REPORT      11
 #define CMD_EXIT        12
 
-#define TOTAL_CMD       (sizeof(commands)/sizeof(cmd_list[0]))
+#define TOTAL_CMD       (sizeof(cmd_list)/sizeof(cmd_list[0]))
+
+#define CMD_REROLL      TOTAL_CMD + 1
+#define CMD_DEBUG       TOTAL_CMD + 2
 #define CMD_ERROR       98
 #define CMD_NULL        99
 
-#ifdef DEBUG
-#define CMD_REROLL      TOTAL_CMD - 2
-#define CMD_DEBUG       TOTAL_CMD - 1
-#endif
-
 static char* cmd_list[] = {
-    "status"
+    "status",
     "lookaway",
     "date",
     "sensors",
@@ -50,11 +48,16 @@ static char* cmd_list[] = {
     "move",
     "report",
     "exit"
-#ifdef DEBUG
-    , "reroll"
-    , "debug"
-#endif
 };
+
+#ifdef DEBUG
+static char* debug_list[] = {
+    "reroll",
+    "debug"
+};
+
+#define TOTAL_DEBUG     (sizeof(debug_list)/sizeof(debug_list[0])
+#endif
 
 /***** command string buffer *****/
 static char cmd_buffer[32];         // half-size of print buffer
