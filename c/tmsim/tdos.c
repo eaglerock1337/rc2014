@@ -60,12 +60,11 @@ uint8_t check_cmd(char *s) {
 
 #ifdef DEBUG
     for (uint8_t i = 0; i < TOTAL_DEBUG; i++) {
-        if (strncmp(debug_list[i], s, strlen(s)) == 0) {
-            return i + TOTAL_CMD + 1;
+        if (strncmp(debug_list[i], s, strlen(debug_list[i])) == 0) {
+            return i + CMD_DEBUG;
         }
     }
 #endif
-
 
 	return CMD_ERROR;
 }
@@ -181,11 +180,11 @@ void cmd_null(struct time_machine* tm) {
 }
 
 #ifdef DEBUG
-void cmd_reroll(struct time_machine* tm, struct player* p) {
-    printdos("reroll goes moo.\n", tm->status.computer);
-}
-
 void cmd_debug(struct time_machine* tm, struct player* p) {
     printdos("debug goes moo.\n", tm->status.computer);
+}
+
+void cmd_reroll(struct time_machine* tm, struct player* p) {
+    printdos("reroll goes moo.\n", tm->status.computer);
 }
 #endif

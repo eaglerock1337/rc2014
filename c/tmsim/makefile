@@ -4,12 +4,21 @@ CFILES=tmsim.c tm.c tdos.c player.c text.c
 HFILES=        tm.h tdos.h player.h text.h
 # z88dk/sdcc compiler files for rc2014
 ZFILES=tmsim.ihx tmsim_BSS.bin tmsim_CODE.bin
+CFLAGS= -D DEBUG
 
 build:  $(OFILES)
 	gcc -o tmsim $(OFILES) 
 
-rcbuild: $(OFILES)
+debug:  $(OFILES)
+	gcc -o tmsim $(CFLAGS) $(OFILES) 
+
+rcbuild:
 	docker run -v ${PWD}:/src/ -it z88dk/z88dk zcc +rc2014 -subtype=cpm -clib=new -SO3 -create-app -DRC -o tmsim $(CFILES)
+	sudo chown $(USERNAME):$(USERNAME) tmsim*
+	mv tmsim.bin tmsim.com
+
+rcdebug:
+	docker run -v ${PWD}:/src/ -it z88dk/z88dk zcc +rc2014 -subtype=cpm -clib=new -SO3 -create-app -DRC -o tmsim $(CFLAGS) $(CFILES)
 	sudo chown $(USERNAME):$(USERNAME) tmsim*
 	mv tmsim.bin tmsim.com
 
