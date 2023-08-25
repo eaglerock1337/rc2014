@@ -40,6 +40,7 @@ void initialize_tm(uint8_t difficulty, struct time_machine* tm) {
 }
 
 /***** bitwise helper functions *****/
+// TODO: redo these to work with the new bitwise values & state checks
 
 // get bitwise power status of an exterior part by ID
 bool get_exterior_power(uint8_t part, uint8_t byte) {
@@ -82,6 +83,7 @@ void unset_bits(uint8_t* byte, uint8_t mask) {
 /***** data refresh functions *****/
 
 void refresh_power_data(struct time_machine* tm) {
+    // TODO: redo this function to work with new bitwise values
     // bitwise check if lower 6 exterior power bits are set (7th bit - 1)
     if (tm->ext_power & (ALL_READY - 1) == ALL_READY - 1) {
         set_bits(&tm->ext_power, ALL_READY);

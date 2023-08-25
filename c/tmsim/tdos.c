@@ -57,7 +57,6 @@ uint8_t check_cmd(char *s) {
             return i;
         }        
     }
-
 #ifdef DEBUG
     for (uint8_t i = 0; i < TOTAL_DEBUG; i++) {
         if (strncmp(debug_list[i], s, strlen(debug_list[i])) == 0) {
@@ -65,7 +64,6 @@ uint8_t check_cmd(char *s) {
         }
     }
 #endif
-
 	return CMD_ERROR;
 }
 
@@ -85,26 +83,28 @@ void printdos(char* str, uint8_t speed) {
     }
 }
 
-bool boot(struct time_machine* tm) {
+bool cold_boot(struct time_machine* tm) {
     refresh_power_data(tm);
     refresh_part_status(tm);
-    tmprint("Starting TDOS boot ROM for RC2014...\n", SLOW_TDOS);
+    tmprint("Starting TDOS bootstrapper for RC2014...\n", SLOW_TDOS);
     delay(4096);
-    tmprint("\nROM loaded successfully. Starting\n", SLOW_TDOS);
-    tmprint("TDOS system health checks:\n", SLOW_TDOS);
+    tmprint("\nROM loaded successfully. Starting "
+            "TDOS system health checks:\n", SLOW_TDOS);
     delay(2048);
     tmprint("\n", SLOW_TDOS);
     uint8_t worst_val = 0;
     for (int i = 0; i < 6; i++) {
         uint8_t val = get_condition(&tm->parts.computer[i]);
         worst_val = (val > worst_val) ? val : worst_val;
-        snprintf(print, PRINT_BUF, "%-20s- %s\n", get_computer_part(i), status_disp(get_part_status(val)));
+        snprintf(print, PRINT_BUF, "%-20s- %s\n", get_computer_part(i),
+                 status_disp(get_part_status(val)));
         tmprint(print, SLOW_TDOS);      // string formatting buffer
-        delay(512);
+        delay(1024);
     }
-    snprintf(print, PRINT_BUF, "\nMain system status  - %s\n", status_disp(get_part_status(worst_val)));
+    snprintf(print, PRINT_BUF, "\nMinimum Part Status - %s\n",
+             status_disp(get_part_status(worst_val)));
     tmprint(print, SLOW_TDOS);          // string formatting buffer
-    delay(1024);
+    delay(2048);
     tm->status.computer = get_part_status(worst_val);
     switch (tm->status.computer) {
     case NOM: tmprint("Running at full clock speed.\n\n", FAST_TDOS);   break;
@@ -114,7 +114,13 @@ bool boot(struct time_machine* tm) {
               return false; break;
     default: printf("Something went wrong in boot()\n");
     }
+    warm_boot(tm);
     return true;
+}
+
+void warm_boot(struct time_machine* tm) {
+    printdos("\n\nWelcome to the Temporal Displacement Operating System.\n", tm->status.computer);
+
 }
 
 /***** tdos command functions *****/

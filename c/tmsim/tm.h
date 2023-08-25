@@ -26,7 +26,7 @@
 #define INTERIOR    1
 #define COMPUTER    2
 
-// exterior part status values
+// exterior part status ids
 #define AIRLOCK     0
 #define SHIELD      1
 #define HOVER       2
@@ -37,7 +37,7 @@
 #define IS_READY    6
 #define PC_CHECK    7
 
-// interior part status values
+// interior part status ids
 #define RC2014      0
 #define POWER       1
 #define SUPPORT     2
@@ -45,7 +45,7 @@
 #define SENSORS     4
 #define CONSOLE     5
 
-// RC2014 computer part values
+// RC2014 computer part ids
 #define BACKPLANE   0
 #define CLOCK       1
 #define CPU         2
@@ -61,8 +61,12 @@
 #define FUSION_ON   16
 #define STEAM_ON    32
 
-#define ALL_READY   64
-#define PC_READY    128
+#define AIRLOCK_FLT 64
+#define SHIELD_FLT  128
+#define HOVER_FLT   256
+#define TESLA_FLT   512
+#define FUSION_FLT  1024
+#define STEAM_FLT   2048
 
 // interior power bitwise values
 #define RC2014_ON   1
@@ -71,6 +75,23 @@
 #define CIRCUITS_ON 8
 #define SENSORS_ON  16
 #define CONSOLE_ON  32
+#define RC2014_FLT  64
+#define POWER_FLT   128
+#define SUPPORT_FLT 256
+#define CIRCUTS_FLT 512
+#define SENSORS_FLT 1024
+#define CONSOLE_FLT 2048
+
+// general power bitwise values and masks
+#define ANY_FAULT   4096    // bit flagging any part faults
+#define FLT_MASK    0       // TODO: get proper bit mask for checking for faults
+#define FLT_STATE   0       // TODO: get expected state for no faults
+
+#define TT_READY    8192    // bit flagging time travel readiness
+#define TT_MASK     0       // TODO: get proper bit mask for checking time travel state
+#define TT_STATE    0       // TODO: get expected state for time travel readiness
+
+// TODO: determine if there is any need for the top two bits for system checks
 
 /***** data structures *****/
 
@@ -87,12 +108,18 @@ struct time_machine_parts {
     struct time_machine_part computer[6];   // computer part value array
 };
 
-
+// the time machine's power status for all parts
 struct time_machine_status {
     // could maybe optimize this later with 2 2-bit words
     uint8_t exterior[6];    // 6 exterior part values
     uint8_t interior[6];
     uint8_t computer;       // single switch
+};
+
+// the time machine's memory bank
+struct time_machine_ram {
+    uint8_t aggro;                      // detected aggro
+    struct time_machine_parts parts;    // detected part data    
 };
 
 struct time_machine {

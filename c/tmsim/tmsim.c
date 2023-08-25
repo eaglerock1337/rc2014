@@ -16,7 +16,7 @@ int main (void) {
     struct time_machine tm;
     initialize_player(difficulty, &me);
     initialize_tm(difficulty, &tm);
-    boot(&tm);
+    cold_boot(&tm);
     tdos_command_loop(&tm, &me);
     return 0;
 }

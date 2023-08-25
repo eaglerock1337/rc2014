@@ -81,8 +81,11 @@ void printarr(char*[], uint8_t);
 // TDOS module print routine
 void printdos(char*, uint8_t);
 
-// the TDOS boot sequence
-bool boot(struct time_machine*);
+// the TDOS bootstrapper ROM sequence
+bool cold_boot(struct time_machine*);
+
+// the TDOS ROM loading sequence
+void warm_boot(struct time_machine*);
 
 /***** tdos command functions *****/
 

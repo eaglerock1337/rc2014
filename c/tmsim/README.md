@@ -17,18 +17,15 @@ I'll tell you a story all about it later.
 
 > This is me trying to divide and conquer, so this might change up.
 
-The project is broken down into multiple files, the main ones being:
+The project is broken down into multiple modules, the main ones being:
 
-- `tmsim.c`   - the game entrypoint, and main menu loop
-- `game.c`    - the main game loop and functions
-- `tdos.c`    - game loop & functions while using the computer
+- `tmsim.c`   - game loop for the main menu and its functions
+- `sim.c`     - game loop for the simulator and its functions
+- `tdos.c`    - game loop for the computer and its functions
+- `tm.c`      - struct for time machine state
+- `player.c`  - struct for player & simulation state
 
-Major data structures are handled by these files:
-
-- `tm.c`      - the main time machine struct
-- `player.c`  - the player's stats and progress
-
-Additional files support the game by providing data structures & helper functions:
+Additional modules support the game by providing data structures & helper functions:
 
 - `travel.c`  - time travel routines
 - `aggro.c`   - outside threats and tracking aggro

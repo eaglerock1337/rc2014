@@ -44,6 +44,7 @@ static char* print = print_buffer;      // 64-char print buffer
 
 // print the provided game text at the provided speed
 void tmprint(char*, uint8_t);
+// TODO: fix RC2014 newline printing issues (with pragma, maybe?)
 
 // delay loop for computers without a rtc
 void delay(uint16_t);
