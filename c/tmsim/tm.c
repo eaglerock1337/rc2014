@@ -23,20 +23,24 @@ uint8_t roll_part(uint8_t difficulty) {
 
 void roll_parts(uint8_t difficulty, struct time_machine_parts* parts) {
     for (int i = 0; i < 6; i++) {
-        parts->exterior[i].wear = roll_part(difficulty);
-        parts->exterior[i].tear = roll_part(difficulty);
-        parts->interior[i].wear = roll_part(difficulty);
-        parts->interior[i].tear = roll_part(difficulty);
+        parts->critical[i].wear = roll_part(difficulty);
+        parts->critical[i].tear = roll_part(difficulty);
+        parts->auxillary[i].wear = roll_part(difficulty);
+        parts->auxillary[i].tear = roll_part(difficulty);
         parts->computer[i].wear = roll_part(difficulty);
         parts->computer[i].tear = roll_part(difficulty);
     }
 }
 
 void initialize_tm(uint8_t difficulty, struct time_machine* tm) {
-    roll_parts(difficulty, &(tm->parts));
-    tm->ext_power = 1;      // all on
-    tm->int_power = 1;      // all on
     tm->energy = rand() % 250 + difficulty * 1000 - 250;
+    roll_parts(difficulty, &(tm->parts));
+
+    tm->crit_power = PWR_LOCK_ON - 1;       // crit parts on
+    tm->crit_status = COORDS_OK - 1;        // crit parts ok
+
+    tm->aux_power = 0;                      // aux parts off
+    tm->aux_status = 1;                     // aux parts ok
 }
 
 /***** bitwise helper functions *****/
@@ -50,7 +54,7 @@ bool get_critical_power(uint8_t part, uint8_t byte) {
     case CIRCUITS:  return byte & CIRCUITS_ON;  break;
     case CONSOLE:   return byte & CONSOLE_ON;   break;
     case RC2014:    return byte & RC2014_ON;    break;
-    case CRITICAL:  return byte & CRITICAL_ON;  break;
+    case ALL_CRIT:  return byte & CRITICAL_ON;  break;
     case PWR_LOCK:  return byte & PWR_LOCK_ON;  break;
     default:        return 0;   // do error stuff later
     }
@@ -82,30 +86,30 @@ void unset_bits(uint8_t* byte, uint8_t mask) {
 /***** data refresh functions *****/
 
 void refresh_power_data(struct time_machine* tm) {
-    // TODO: redo this function to work with new bitwise values
     // bitwise check if lower 6 exterior power bits are set (7th bit - 1)
-    if (tm->ext_power & (ALL_READY - 1) == ALL_READY - 1) {
-        set_bits(&tm->ext_power, ALL_READY);
+    if (tm->crit_power & (CRITICAL_ON - 1) == CRITICAL_ON - 1) {
+        set_bits(&tm->crit_power, CRITICAL_ON);
     } else {
-        unset_bits(&tm->ext_power, ALL_READY);
+        unset_bits(&tm->crit_power, CRITICAL_ON);
     }
-    // bitwise check if lower 6 interior power bits are set (7th bit - 1)
-    if (tm->int_power & (ALL_READY - 1) == ALL_READY - 1) {
-        set_bits(&tm->int_power, ALL_READY);
+    // bitwise check if lower 6 exterior power bits are set (7th bit - 1)
+    if (tm->crit_status & (CRITICAL_OK - 1) == CRITICAL_OK - 1) {
+        set_bits(&tm->crit_status, CRITICAL_OK);
     } else {
-        unset_bits(&tm->int_power, ALL_READY);
+        unset_bits(&tm->crit_status, CRITICAL_OK);
     }
+
 }
 
 void refresh_part_status(struct time_machine* tm) {
     uint8_t worst = NOM;
     uint8_t cond;
     for (uint8_t i = 0; i < 6; i++) {
-        cond = get_part_status(get_condition(get_part(i, EXTERIOR, tm)));
-        tm->status.exterior[i] = cond;
+        cond = get_part_status(get_condition(get_part(i, CRITICAL, tm)));
+        tm->status.critical[i] = cond;
         worst = cond > worst ? cond : worst;
-        cond = get_part_status(get_condition(get_part(i, INTERIOR, tm)));
-        tm->status.interior[i] = cond;
+        cond = get_part_status(get_condition(get_part(i, AUXILLARY, tm)));
+        tm->status.auxillary[i] = cond;
         worst = cond > worst ? cond : worst;
     }
     tm->tm_status = worst;
@@ -117,8 +121,8 @@ struct time_machine_part* get_part(uint8_t id, uint8_t type, struct time_machine
     struct time_machine_part* part;
 
     switch (type) {
-    case EXTERIOR:  part = &tm->parts.exterior[id];     break;
-    case INTERIOR:  part = &tm->parts.interior[id];     break;
+    case CRITICAL:  part = &tm->parts.critical[id];     break;
+    case AUXILLARY: part = &tm->parts.auxillary[id];    break;
     case COMPUTER:  part = &tm->parts.computer[id];     break;
     default:    printf("Something went wrong in get_part()\n");
     }
@@ -153,34 +157,37 @@ void tear_part(struct time_machine_part* part) {
     part->tear += rand() % (5 * (part->wear / 20));
 }
 
-void power_part(uint8_t id, uint8_t type, struct time_machine* tm) {
-    switch (type) {
-    case EXTERIOR:  set_bits(&tm->ext_power, id);    break;
-    case INTERIOR:  set_bits(&tm->int_power, id);    break;
-    case COMPUTER:  tm->computer = ON;               break;
-    default:    printf("Something went wrong in power_part()\n");
+void power_part(uint8_t id, bool is_crit, bool status, struct time_machine* tm) {
+    void (*bitop)(uint8_t*, uint8_t) = status ? &set_bits : &unset_bits;
+    if (is_crit) {
+        (*bitop)(&tm->crit_power, id);
+    } else {
+        (*bitop)(&tm->aux_power, id);
     }
 }
 
-bool turn_on_part(uint8_t id, uint8_t type, struct time_machine* tm) {
-    struct time_machine_part* part = get_part(id, type, tm);
+void reset_part(uint8_t id, bool is_crit, bool status, struct time_machine* tm) {
+    void (*bitop)(uint8_t*, uint8_t) = status ? &set_bits : &unset_bits;
+    if (is_crit) {
+        (*bitop)(&tm->crit_power, id);
+    } else {
+        (*bitop)(&tm->aux_power, id);
+    }}
+
+bool turn_on_part(uint8_t id, bool is_crit, struct time_machine* tm) {
+    struct time_machine_part* part = get_part(id, is_crit, tm);
     uint8_t cond = get_condition(part);
     uint8_t chance = 9/10 * cond + 5;
     if (rand() % 100 < chance) {
-        power_part(id, type, tm);
+        power_part(id, is_crit, ON, tm);
         return true;
     } else {
         return false;
     }
 }
 
-void turn_off_part(uint8_t id, uint8_t type, struct time_machine* tm) {
-    switch (type) {
-    case EXTERIOR:  unset_bits(&tm->ext_power, id);  break;
-    case INTERIOR:  unset_bits(&tm->int_power, id);  break;
-    case COMPUTER:  tm->computer = OFF;             break;
-    default:    printf("Something went wrong in turn_off_part()\n");    
-    }
+void turn_off_part(uint8_t id, bool is_crit, struct time_machine* tm) {
+    reset_part(id, is_crit, OFF, tm);
 }
 
 /***** print functions *****/

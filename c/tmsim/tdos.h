@@ -13,19 +13,23 @@
 
 /***** command constants & preprocessor declarations *****/
 
+#define VERSION         "0.0.4"
+#define COMPILED        "08/25/2023"
+
 #define CMD_STATUS      0
 #define CMD_LOOKAWAY    1
 #define CMD_DATE        2
 #define CMD_SENSORS     3
 #define CMD_HELP        4
-#define CMD_CALCULATE   5
-#define CMD_EMERGENCY   6
-#define CMD_INVENTORY   7
-#define CMD_PLAYER      8
-#define CMD_SHIELD      9
-#define CMD_MOVE        10
-#define CMD_REPORT      11
-#define CMD_EXIT        12
+#define CMD_CIRCUITS    5
+#define CMD_CALCULATE   6
+#define CMD_EMERGENCY   7
+#define CMD_INVENTORY   8
+#define CMD_PLAYER      9
+#define CMD_SHIELD      10
+#define CMD_MOVE        11
+#define CMD_REPORT      12
+#define CMD_EXIT        13
 
 #define TOTAL_CMD       (sizeof(cmd_list)/sizeof(cmd_list[0]))
 
@@ -43,6 +47,7 @@ static char* cmd_list[] = {
     "date",
     "sensors",
     "help",
+    "circuits",
     "calculate",
     "emergency",
     "inventory",
@@ -103,6 +108,9 @@ void cmd_sensors(struct time_machine*, struct player*);
 
 // command - help - TDOS help command
 void cmd_help(struct time_machine*, struct player*);
+
+// command - circuits - time circuit calibration
+void cmd_circuits(struct time_machine*, struct player*);
 
 // command - calculate - calculate spacetime trajectories
 void cmd_calculate(struct time_machine*, struct player*);

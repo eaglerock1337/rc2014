@@ -101,17 +101,16 @@ bool cold_boot(struct time_machine* tm) {
         tmprint(print, SLOW_TDOS);      // string formatting buffer
         delay(1024);
     }
-    snprintf(print, PRINT_BUF, "\nMinimum Part Status - %s\n",
+    snprintf(print, PRINT_BUF, "Minimum Part Status - %s\n",
              status_disp(get_part_status(worst_val)));
     tmprint(print, SLOW_TDOS);          // string formatting buffer
     delay(2048);
     tm->status.computer = get_part_status(worst_val);
     switch (tm->status.computer) {
-    case NOM: tmprint("Running at full clock speed.\n\n", FAST_TDOS);   break;
-    case INF: tmprint("Running at normal clock speed.\n\n", NORM_TDOS);  break;
-    case WRN: tmprint("Running at safe clock speed.\n\n", SLOW_TDOS);  break;
-    case FLT: tmprint("System in critical condition. Halting.\n\n", SLOW_TDOS);
-              return false; break;
+    case NOM: tmprint("Running at full clock speed.\n", FAST_TDOS); break;
+    case INF: tmprint("Running at normal clock speed.\n", NORM_TDOS); break;
+    case WRN: tmprint("Running at safe clock speed.\n", SLOW_TDOS); break;
+    case FLT: tmprint("System in critical condition. Halting.\n\n", SLOW_TDOS); return false;
     default: printf("Something went wrong in boot()\n");
     }
     warm_boot(tm);
@@ -119,8 +118,12 @@ bool cold_boot(struct time_machine* tm) {
 }
 
 void warm_boot(struct time_machine* tm) {
-    printdos("\n\nWelcome to the Temporal Displacement Operating System.\n", tm->status.computer);
-
+    printdos("\nStarting Temporal Displacement Operating System\n", tm->status.computer);
+    snprintf(print, PRINT_BUF, "    Version %s compiled on %s...\n", VERSION, COMPILED);
+    printdos(print, tm->status.computer);       // string buffer
+    delay(4096);
+    // TODO: more here later
+    printdos("\n", tm->status.computer);
 }
 
 /***** tdos command functions *****/
@@ -143,6 +146,10 @@ void cmd_sensors(struct time_machine* tm, struct player* p) {
 
 void cmd_help(struct time_machine* tm, struct player* p) {
     printdos("help goes moo.\n", tm->status.computer);
+}
+
+void cmd_circuits(struct time_machine* tm, struct player* p) {
+    printdos("circuits goes moo.\n", tm->status.computer);
 }
 
 void cmd_calculate(struct time_machine* tm, struct player* p) {

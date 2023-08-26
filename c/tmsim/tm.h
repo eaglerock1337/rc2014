@@ -8,6 +8,10 @@
 * TMSim - Time machine header file
 ***************************************/
 
+// basic power status
+#define OFF     0
+#define ON      1
+
 // display statuses
 #define NOM     0   // nominal status
 #define INF     1   // info status
@@ -15,8 +19,8 @@
 #define FLT     3   // fault status
 
 // part types
-#define CRITICAL    0
-#define AUXILLARY   1
+#define AUXILLARY   0
+#define CRITICAL    1
 #define COMPUTER    2
 
 // critical part status ids
@@ -26,7 +30,7 @@
 #define CIRCUITS    3
 #define CONSOLE     4
 #define RC2014      5
-#define CRITICAL    6
+#define ALL_CRIT    6
 #define PWR_LOCK    7
 
 // auxillary part status ids
@@ -91,31 +95,30 @@ struct time_machine_part {
 
 // the time machine's complete part wear & tear value set
 struct time_machine_parts {
-    struct time_machine_part exterior[6];   // exterior part value array
-    struct time_machine_part interior[6];   // interior part value array
-    struct time_machine_part computer[6];   // computer part value array
+    struct time_machine_part critical[6];   // core part value array
+    struct time_machine_part auxillary[6];  // aux part value array
+    struct time_machine_part computer[6];   // rc2014 part value array
 };
 
-// the time machine's power status for all parts
-// struct time_machine_status {
-//     // could maybe optimize this later with 2 2-bit words
-//     uint8_t exterior[6];    // 6 exterior part values
-//     uint8_t interior[6];
-//     uint8_t computer;       // single switch
-// };
+// the time machine's display status for all parts
+struct time_machine_status {
+    // TODO: optimize this later with 2 2-bit words
+    uint8_t critical[6];    // 6 exterior part values
+    uint8_t auxillary[6];
+    uint8_t computer;       // single switch
+};
 
-// the time machine's memory bank
+// the time machine's memory bank (lost on reset)
 struct time_machine_ram {
     uint8_t aggro;                      // detected aggro
-    struct time_machine_parts parts;    // detected part data    
+    struct time_machine_parts parts;    // detected part data
 };
 
 struct time_machine {
     uint32_t energy;                    // total energy in kJ
-    uint8_t tm_status;                  // main status
-
     struct time_machine_parts parts;    // wear & tear
-    // struct time_machine_status status;  // display status
+    struct time_machine_status status;  // display statuses
+    uint8_t tm_status;                  // overall system status
 
     uint8_t crit_power;                 // bitwise power
     uint8_t crit_status;                // bitwise status
@@ -180,14 +183,17 @@ void wear_part(struct time_machine_part*);
 // perform part tear on a given part
 void tear_part(struct time_machine_part*);
 
-// turn on a part based on part id and type
-void power_part(uint8_t, uint8_t, struct time_machine*);
+// turn on a part on or off based on part id and if critical
+void power_part(uint8_t, bool, bool, struct time_machine*);
+
+// fault or reset a part based on part id and if critical
+void reset_part(uint8_t, bool, bool, struct time_machine*);
 
 // attempt to turn on a part & return 1 if successful
-bool turn_on_part(uint8_t, uint8_t, struct time_machine*);
+bool turn_on_part(uint8_t, bool, struct time_machine*);
 
-// turn off the specified part by id and type
-void turn_off_part(uint8_t, uint8_t, struct time_machine*);
+// turn off the specified part by id and if it is critical
+void turn_off_part(uint8_t, bool, struct time_machine*);
 
 /***** print functions *****/
 
