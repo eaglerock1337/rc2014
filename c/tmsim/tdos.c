@@ -1,3 +1,5 @@
+#include <float.h>
+#include <math.h>
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdio.h>
@@ -24,7 +26,7 @@ void tdos_command_loop(struct time_machine* tm, struct player* p) {
         uint8_t cmd_id = check_cmd(cmd);
         switch (cmd_id) {
         case CMD_STATUS:        cmd_status(tm, p);      break;
-        case CMD_LOOKAWAY:      cmd_lookaway(tm, p);    break;
+        case CMD_LOOKAWAY:      cmd_lookaway(tm, p);    return;
         case CMD_DATE:          cmd_date(tm, p);        break;
         case CMD_SENSORS:       cmd_sensors(tm, p);     break;
         case CMD_HELP:          cmd_help(tm, p);        break;
@@ -45,12 +47,17 @@ void tdos_command_loop(struct time_machine* tm, struct player* p) {
 #endif
         default:    printf("Something went wrong in tdos_command_loop()\n");
         }
+#ifdef DEBUG
         snprintf(print, PRINT_BUF, "\nYou entered %s.\n", cmd);
         printdos(print, tm->status.computer);
+#else
+        printdos("\n", tm->status.computer);
+#endif
     } while (true);
 }
 
 uint8_t check_cmd(char *s) {
+    // TODO: add protected command list (e.g. lookaway, emergency)
     if (strlen(s) == 0) { return CMD_NULL; }
 
     for (uint8_t i = 0; i < TOTAL_CMD; i++) {
@@ -120,11 +127,11 @@ bool cold_boot(struct time_machine* tm) {
 
 void warm_boot(struct time_machine* tm) {
     printdos("\nStarting Temporal Displacement Operating System\n", tm->status.computer);
-    snprintf(print, PRINT_BUF, "    Version %s compiled on %s...\n", VERSION, COMPILED);
+    snprintf(print, PRINT_BUF, "    Version %s compiled on %s...\n\n", VERSION, COMPILED);
     printdos(print, tm->status.computer);       // string buffer
     delay(4096);
     // TODO: more here later
-    printdos("\n", tm->status.computer);
+    // printdos("\n", tm->status.computer);
 }
 
 /***** tdos command functions *****/
@@ -146,7 +153,22 @@ void cmd_sensors(struct time_machine* tm, struct player* p) {
 }
 
 void cmd_help(struct time_machine* tm, struct player* p) {
-    printdos("help goes moo.\n", tm->status.computer);
+    // TODO: add sarcasm (use a help_count variable?)
+    printdos("The following commands are available:\n", tm->status.computer);
+    uint8_t rows = floor((TOTAL_CMD + TOTAL_DEBUG) / 4);
+    uint8_t rem = (TOTAL_CMD + TOTAL_DEBUG) % 4;
+    for (int i = 0; i < rows; i++) {    // all complete rows
+        snprintf(print, PRINT_BUF, "%-9s %-9s %-9s %-9s\n",
+                 cmd_list[i*4], cmd_list[i*4 + 1], 
+                 cmd_list[i*4 + 2], cmd_list[i*4 + 3]);
+        printdos(print, tm->status.computer);
+    }
+    for (int i = 4 * rows; i < 4 * rows + rem; i++) {
+        snprintf(print, PRINT_BUF, "%-9s ", cmd_list[i]);
+        printdos(print, tm->status.computer);
+    }
+    // TODO: add more detailed help option here
+    printdos("\n", tm->status.computer);
 }
 
 void cmd_circuits(struct time_machine* tm, struct player* p) {

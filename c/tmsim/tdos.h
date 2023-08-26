@@ -13,8 +13,8 @@
 
 /***** command constants & preprocessor declarations *****/
 
-#define VERSION         "0.0.4"
-#define COMPILED        "08/25/2023"
+#define VERSION         "0.0.5"
+#define COMPILED        "08/26/2023"
 
 #define CMD_STATUS      0
 #define CMD_LOOKAWAY    1
@@ -41,6 +41,7 @@
 #define CMD_REROLL      101
 #endif
 
+// primary command list
 static char* cmd_list[] = {
     "status",
     "lookaway",
@@ -58,6 +59,7 @@ static char* cmd_list[] = {
     "exit"
 };
 
+// debug commands
 #ifdef DEBUG
 static char* debug_list[] = {
     "debug",
@@ -65,6 +67,8 @@ static char* debug_list[] = {
 };
 
 #define TOTAL_DEBUG     (sizeof(debug_list)/sizeof(debug_list[0]))
+#else
+#define TOTAL_DEBUG     0
 #endif
 
 /***** command string buffer *****/

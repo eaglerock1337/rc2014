@@ -13,6 +13,7 @@ I'll tell you a story all about it later.
 |0.0.2|8/24/23|proper string I/O buffers|
 |0.0.3|8/25/23|computer command loop & debug mode|
 |0.0.4|8/25/23|rethink & rework data structures|
+|0.0.5|8/26/23|first commands working|
 
 ## architecture
 
