@@ -155,9 +155,9 @@ void cmd_sensors(struct time_machine* tm, struct player* p) {
 void cmd_help(struct time_machine* tm, struct player* p) {
     // TODO: add sarcasm (use a help_count variable?)
     printdos("The following commands are available:\n", tm->status.computer);
-    uint8_t rows = floor((TOTAL_CMD + TOTAL_DEBUG) / 4);
-    uint8_t rem = (TOTAL_CMD + TOTAL_DEBUG) % 4;
-    for (int i = 0; i < rows; i++) {    // all complete rows
+    uint8_t rows = floor((TOTAL_CMD + TOTAL_DEBUG) / 4);    // all complete rows
+    uint8_t rem = (TOTAL_CMD + TOTAL_DEBUG) % 4;            // final incomplete row
+    for (int i = 0; i < rows; i++) {
         snprintf(print, PRINT_BUF, "%-9s %-9s %-9s %-9s\n",
                  cmd_list[i*4], cmd_list[i*4 + 1], 
                  cmd_list[i*4 + 2], cmd_list[i*4 + 3]);
