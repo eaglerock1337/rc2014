@@ -28,6 +28,7 @@ void tdos_command_loop(struct time_machine* tm, struct player* p) {
         case CMD_DATE:          cmd_date(tm, p);        break;
         case CMD_SENSORS:       cmd_sensors(tm, p);     break;
         case CMD_HELP:          cmd_help(tm, p);        break;
+        case CMD_CIRCUITS:      cmd_circuits(tm, p);    break;
         case CMD_CALCULATE:     cmd_calculate(tm, p);   break;
         case CMD_EMERGENCY:     cmd_emergency(tm, p);   break;
         case CMD_INVENTORY:     cmd_inventory(tm, p);   break;
