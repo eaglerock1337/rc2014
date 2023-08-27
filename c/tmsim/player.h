@@ -1,6 +1,7 @@
 #ifndef PLAYER_H_
 #define PLAYER_H_
 
+#include <stdbool.h>
 #include <stdint.h>
 
 /***************************************
@@ -16,19 +17,18 @@
 #define LUCK            5
 
 struct player {
-    // player stats
-    uint8_t stats[6];
+    uint8_t stats[6];   // all 6 player stats
 
-    // player progress
-    uint8_t experience;
-    uint8_t level;    
+    uint8_t exp;        // player experience towards next level
+    uint8_t level;      // player level
+    uint32_t score;     // player score
 
-    // player threat
-    uint8_t difficulty;
-    uint8_t aggro;
+    uint8_t difficulty; // how hard the game is
+    uint8_t aggro;      // how much threat the player has
 
-    // TODO: add "current view" variable for tracking
-    //       where player is in simulation
+    // player state control
+    uint8_t view;       // where the player is looking
+    bool paused;        // if the simulation is paused
 };
 
 // rolls a single stat based on a 1-5 difficulty

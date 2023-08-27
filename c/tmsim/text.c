@@ -21,3 +21,10 @@ void delay(uint16_t length) {
         for (uint16_t j = 0; j < DELAYLOOP; j++);
     }
 }
+
+void lineprint(char dash, uint8_t size) {
+    for (uint8_t i = 0; i < size; i++) {
+        putc(dash, stdout);
+    }
+    putc('\n', stdout);
+}

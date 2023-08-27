@@ -24,7 +24,7 @@
 
 // delay array mappings
 static const uint16_t delays[8] = {
-    512, 1024, 512, 256,
+    128, 320, 192, 96,
     512, 256, 192, 2048
 };
 
@@ -48,5 +48,8 @@ void tmprint(char*, uint8_t);
 
 // delay loop for computers without a rtc
 void delay(uint16_t);
+
+// print a line of the provided chracter to the specified width
+void lineprint(char, uint8_t);
 
 #endif

@@ -22,9 +22,15 @@ void roll_stats(uint8_t difficulty, struct player* p) {
 
 void initialize_player(uint8_t difficulty, struct player* p) {
     roll_stats(difficulty, p);
-    p->experience = 0;
+    // player progress
+    p->exp = 0;
     p->level = 1;
-    p->aggro = 0;
+    p->score = 0;
+    // player threat
     p->difficulty = difficulty;
+    p->aggro = 0;
+    // player state
+    p->view = 1;        // set to console view
+    p->paused = 1;      // start paused
 }
 

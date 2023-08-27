@@ -1,6 +1,6 @@
 # standard gcc (or similar compiler) files
-OFILES=tmsim.o tm.o tdos.o player.o text.o
-CFILES=tmsim.c tm.c tdos.c player.c text.c
+OFILES=tmsim.o tm.o sim.o tdos.o player.o text.o
+CFILES=tmsim.c tm.c sim.c tdos.c player.c text.c
 # z88dk/sdcc compiler files for rc2014
 ZFILES=tmsim.ihx tmsim_BSS.bin tmsim_CODE.bin
 CFLAGS= -D DEBUG
