@@ -28,9 +28,11 @@ void enter_sim_loop(struct time_machine* tm, struct player* p) {
     p->paused = false;
     p->new_view = false;
     narrate("You are now entering the simulation.\n", NORM);
-    lineprint("=", 64);
+    lineprint('=', 64);
+    delay(4096);
     sim_loop(tm, p);
-    narrate("Sim loop no longer goes moo.", FAST);
+    lineprint('=', 64);
+    narrate("Simulation paused. Returning to main menu.\n\n", FAST);
 }
 
 /***** simulator view functions *****/

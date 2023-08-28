@@ -3,6 +3,7 @@
 #include <stdlib.h>
 
 #include "player.h"
+#include "sim.h"
 
 /***************************************
 * TMSim - Player module
@@ -31,7 +32,7 @@ void initialize_player(uint8_t difficulty, struct player* p) {
     p->difficulty = difficulty;
     p->aggro = 0;
     // player state
-    p->view = 1;            // set to console view
+    p->view = VIEW_CONSOLE;         // set to console view
     p->new_view = true;
     p->paused = true;
 }

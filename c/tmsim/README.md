@@ -14,6 +14,7 @@ I'll tell you a story all about it later.
 |0.0.3|8/25/23|computer command loop & debug mode|
 |0.0.4|8/25/23|rethink & rework data structures|
 |0.0.5|8/26/23|first commands working|
+|0.0.6|8/27/23|main simulation loop started|
 
 ## architecture
 
@@ -30,6 +31,7 @@ The project is broken down into multiple modules, the main ones being:
 Additional modules support the game by providing data structures & helper functions:
 
 - `travel.c`  - time travel routines
+- `time.c`    - structs for tracking time
 - `aggro.c`   - outside threats and tracking aggro
 - `event.c`   - game events and outcomes
 - `intro.c`   - the game introduction & dialogue

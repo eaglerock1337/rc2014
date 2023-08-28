@@ -13,8 +13,8 @@
 
 /***** command constants & preprocessor declarations *****/
 
-#define VERSION         "0.0.5"
-#define COMPILED        "08/26/2023"
+#define VERSION         "0.0.6"
+#define COMPILED        "08/27/2023"
 
 #define CMD_STATUS      0
 #define CMD_LOOKAWAY    1
