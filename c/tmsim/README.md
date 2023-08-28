@@ -15,6 +15,7 @@ I'll tell you a story all about it later.
 |0.0.4|8/25/23|rethink & rework data structures|
 |0.0.5|8/26/23|first commands working|
 |0.0.6|8/27/23|main simulation loop started|
+|0.0.7|8/28/23|"commands, protected commands."
 
 ## architecture
 

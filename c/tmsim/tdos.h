@@ -13,29 +13,37 @@
 
 /***** command constants & preprocessor declarations *****/
 
-#define VERSION         "0.0.6"
-#define COMPILED        "08/27/2023"
+#define VERSION         "0.0.7"
+#define COMPILED        "08/28/2023"
 
+// normal commands (allows for shortcuts)
 #define CMD_STATUS      0
-#define CMD_LOOKAWAY    1
-#define CMD_DATE        2
-#define CMD_SENSORS     3
-#define CMD_HELP        4
-#define CMD_CIRCUITS    5
-#define CMD_CALCULATE   6
-#define CMD_EMERGENCY   7
-#define CMD_INVENTORY   8
-#define CMD_PLAYER      9
-#define CMD_SHIELD      10
-#define CMD_MOVE        11
-#define CMD_REPORT      12
-#define CMD_EXIT        13
+#define CMD_DATE        1
+#define CMD_SENSORS     2
+#define CMD_HELP        3
+#define CMD_CIRCUITS    4
+#define CMD_CALCULATE   5
+#define CMD_INVENTORY   6
+#define CMD_PLAYER      7
+#define CMD_SHIELD      8
+#define CMD_MOVE        9
+#define CMD_REPORT      10
+#define CMD_ODDS        11
+
+// protected commands (full command required)
+#define CMD_LOOKAWAY    50
+#define CMD_TRAVEL      51
+#define CMD_EXIT        52
+#define CMD_EMERGENCY   53
 
 #define TOTAL_CMD       (sizeof(cmd_list)/sizeof(cmd_list[0]))
+#define TOTAL_PROT      (sizeof(cmd_prot)/sizeof(cmd_prot[0]))
 
+// non-commands
 #define CMD_ERROR       98
 #define CMD_NULL        99
 
+// debug commands
 #ifdef DEBUG
 #define CMD_DEBUG       100
 #define CMD_REROLL      101
@@ -44,19 +52,25 @@
 // primary command list
 static char* cmd_list[] = {
     "status",
-    "lookaway",
     "date",
     "sensors",
     "help",
     "circuits",
     "calculate",
-    "emergency",
     "inventory",
     "player",
     "shield",
     "move",
     "report",
-    "exit"
+    "odds"
+};
+
+// protected command list
+static char* cmd_prot[] = {
+    "lookaway",
+    "travel",
+    "exit",
+    "emergency"
 };
 
 // debug commands
@@ -96,13 +110,10 @@ bool cold_boot(struct time_machine*);
 // the TDOS ROM loading sequence
 void warm_boot(struct time_machine*);
 
-/***** tdos command functions *****/
+/***** tdos normal command functions *****/
 
 // command - status - get overall game status from computer
 void cmd_status(struct time_machine*, struct player*);
-
-// command - status - look away from the screen to return to main game loop
-void cmd_lookaway(struct time_machine*, struct player*);
 
 // command - date - get information about the current date
 void cmd_date(struct time_machine*, struct player*);
@@ -119,9 +130,6 @@ void cmd_circuits(struct time_machine*, struct player*);
 // command - calculate - calculate spacetime trajectories
 void cmd_calculate(struct time_machine*, struct player*);
 
-// command - emergency - emergency time travel routine
-void cmd_emergency(struct time_machine*, struct player*);
- 
 // command - inventory - get time machine inventory
 void cmd_inventory(struct time_machine*, struct player*);
 
@@ -137,8 +145,25 @@ void cmd_move(struct time_machine*, struct player*);
 // command - report - get detailed reports from the computer
 void cmd_report(struct time_machine*, struct player*);
 
+// command - odds - "Never tell me the odds."
+//           get success probabilities for certain tasks
+void cmd_odds(struct time_machine*, struct player*);
+
+/***** tdos protected command functions *****/
+
+// command - status - look away from the screen to return to main game loop
+void cmd_lookaway(struct time_machine*, struct player*);
+
+// command - travel - main time travel routine
+void cmd_travel(struct time_machine*, struct player*);
+ 
 // command - exit - exit the simulation
 void cmd_exit(struct time_machine*, struct player*);
+
+// command - emergency - emergency time travel routine
+void cmd_emergency(struct time_machine*, struct player*);
+ 
+/***** tdos non-command functions *****/
 
 // command - error - process a command error
 void cmd_error(struct time_machine*);
