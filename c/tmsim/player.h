@@ -28,6 +28,7 @@ struct player {
 
     // player state control
     uint8_t view;       // where the player is looking
+    bool new_view;      // if the user has just switched view
     bool paused;        // if the simulation is paused
 };
 

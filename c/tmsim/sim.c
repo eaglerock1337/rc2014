@@ -25,8 +25,10 @@ void sim_loop(struct time_machine* tm, struct player* p) {
 }
 
 void enter_sim_loop(struct time_machine* tm, struct player* p) {
-    p->paused = 0;
-    narrate("Sim loop goes moo.", FAST);
+    p->paused = false;
+    p->new_view = false;
+    narrate("You are now entering the simulation.\n", NORM);
+    lineprint("=", 64);
     sim_loop(tm, p);
     narrate("Sim loop no longer goes moo.", FAST);
 }
@@ -34,11 +36,15 @@ void enter_sim_loop(struct time_machine* tm, struct player* p) {
 /***** simulator view functions *****/
 
 void view_inside(struct time_machine* tm, struct player* p) {
-    // inside loop goes here
+    if (p->new_view) {
+        narrate("You are sitting inside the time machine. The", SLOW);
+    } else {
+        narrate("You are still sitting inside the time machine.\n\n", NORM);
+    }
 }
 
 void view_outside(struct time_machine* tm, struct player* p) {
-    // outside loop goes here
+    // TODO: outside loop goes here
 }
 
 void view_console(struct time_machine* tm, struct player* p) {
@@ -46,15 +52,15 @@ void view_console(struct time_machine* tm, struct player* p) {
     lineprint('-', 64);
     delay(8192);
     tdos_command_loop(tm, p);
-    // NOTE: time processing goes here
+    // TODO: time processing goes here
 }
 
 void view_control_panel(struct time_machine* tm, struct player* p) {
-    // control panel loop goes here
+    // TODO: control panel loop goes here
 }
 
 void view_breaker_panel(struct time_machine* tm, struct player* p) {
-    // breaker panel goes here
+    // TODO: breaker panel goes here
 }
 
 /***** simulator action functions *****/
