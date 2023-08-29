@@ -222,7 +222,7 @@ void cmd_odds(struct time_machine* tm, struct player* p) {
 
 void cmd_lookaway(struct time_machine* tm, struct player* p) {
     printdos("You look away from the console.\n", tm->status.computer);
-    lineprint('-', 64);
+    lineprint('_', 64);
     delay(4096);
     p->view = VIEW_INSIDE;
 }

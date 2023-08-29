@@ -34,6 +34,7 @@ Additional modules support the game by providing data structures & helper functi
 
 - `travel.c`  - time travel routines
 - `time.c`    - structs for tracking time
+- `storage.c` - structs for items & inventory tracking
 - `aggro.c`   - outside threats and tracking aggro
 - `event.c`   - game events and outcomes
 - `intro.c`   - the game introduction & dialogue

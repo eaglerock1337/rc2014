@@ -52,4 +52,7 @@ void delay(uint16_t);
 // print a line of the provided chracter to the specified width
 void lineprint(char, uint8_t);
 
+// get a single-character response from the player
+int get_response();
+
 #endif
