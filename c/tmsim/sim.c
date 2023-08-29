@@ -19,6 +19,7 @@ void sim_loop(struct time_machine* tm, struct player* p) {
         case VIEW_CONSOLE:  view_console(tm, p);        break;
         case VIEW_CONTROL:  view_control_panel(tm, p);  break;
         case VIEW_BREAKER:  view_breaker_panel(tm, p);  break;
+        case VIEW_STORAGE:  view_storage(tm, p);        break;
         default:    printf("Something went wrong in sim_loop()\n");
         }
     }
@@ -31,15 +32,15 @@ void enter_sim_loop(struct time_machine* tm, struct player* p) {
     lineprint('=', 64);
     delay(4096);
     sim_loop(tm, p);
+    narrate("Simulation paused. Returning to main menu.\n", FAST);
     lineprint('=', 64);
-    narrate("Simulation paused. Returning to main menu.\n\n", FAST);
 }
 
 /***** simulator view functions *****/
 
 void view_inside(struct time_machine* tm, struct player* p) {
     if (p->new_view) {
-        narrate("You are sitting inside the time machine. The", SLOW);
+        narrate("You are sitting inside the time machine.", SLOW);
     } else {
         narrate("You are still sitting inside the time machine.\n\n", NORM);
     }
@@ -51,18 +52,23 @@ void view_outside(struct time_machine* tm, struct player* p) {
 
 void view_console(struct time_machine* tm, struct player* p) {
     narrate("You turn your attention to the console screen.\n", NORM);
-    lineprint('-', 64);
+    lineprint('_', 64);
     delay(8192);
     tdos_command_loop(tm, p);
-    // TODO: time processing goes here
+    // TODO: time processing for post-tdos use goes here
 }
 
 void view_control_panel(struct time_machine* tm, struct player* p) {
     // TODO: control panel loop goes here
+
 }
 
 void view_breaker_panel(struct time_machine* tm, struct player* p) {
     // TODO: breaker panel goes here
+}
+
+void view_storage(struct time_machine* tm, struct player* p) {
+    // TODO: storage compartment goes here
 }
 
 /***** simulator action functions *****/

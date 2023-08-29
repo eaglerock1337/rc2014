@@ -3,6 +3,7 @@
 
 #include <stdint.h>
 
+#include "player.h"
 #include "tm.h"
 
 /***************************************
@@ -21,6 +22,7 @@
 #define VIEW_CONSOLE    2
 #define VIEW_CONTROL    3
 #define VIEW_BREAKER    4
+#define VIEW_STORAGE    5
 
 /***** action constants & preprocessor declarations *****/
 
@@ -51,6 +53,9 @@ void view_control_panel(struct time_machine*, struct player*);
 
 // view - looking at the breaker panel
 void view_breaker_panel(struct time_machine*, struct player*);
+
+// view - looking at the storage compartment
+void view_storage(struct time_machine*, struct player*);
 
 /***** simulator action functions *****/
 

@@ -27,4 +27,6 @@ void lineprint(char dash, uint8_t size) {
         putc(dash, stdout);
     }
     putc('\n', stdout);
+    delay(8192);
+    putc('\n', stdout);
 }

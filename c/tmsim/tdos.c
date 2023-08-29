@@ -5,6 +5,7 @@
 #include <stdio.h>
 #include <string.h>
 
+#include "sim.h"
 #include "tdos.h"
 #include "text.h"
 #include "tm.h"
@@ -23,6 +24,10 @@ void tdos_command_loop(struct time_machine* tm, struct player* p) {
         printdos(print, tm->status.computer);       // string print buffer
         // TODO: proper scan function that sanitizes character input
         scanf("%s", cmd);
+#ifdef RC
+        // this is way easier than dealing with C compiler pragmas
+        printdos("\n", tm->status.computer);
+#endif
         uint8_t cmd_id = check_cmd(cmd);
         switch (cmd_id) {
         case CMD_STATUS:        cmd_status(tm, p);      break;
@@ -39,7 +44,7 @@ void tdos_command_loop(struct time_machine* tm, struct player* p) {
         case CMD_REPORT:        cmd_report(tm, p);      break;
         case CMD_ODDS:          cmd_odds(tm, p);        break;
         case CMD_TRAVEL:        cmd_travel(tm, p);      break;
-        case CMD_EXIT:          cmd_exit(tm, p);        break;
+        case CMD_EXIT:          cmd_exit(tm, p);        return;
         case CMD_EMERGENCY:     cmd_emergency(tm, p);   break;
         case CMD_ERROR:         cmd_error(tm);          break;
         case CMD_NULL:          cmd_null(tm);           break;
@@ -49,12 +54,6 @@ void tdos_command_loop(struct time_machine* tm, struct player* p) {
 #endif
         default:    printf("Something went wrong in tdos_command_loop()\n");
         }
-#ifdef DEBUG
-        snprintf(print, PRINT_BUF, "\nYou entered %s.\n", cmd);
-        printdos(print, tm->status.computer);
-#else
-        printdos("\n", tm->status.computer);
-#endif
     } while (true);
 }
 
@@ -69,8 +68,8 @@ uint8_t check_cmd(char *s) {
     }
 
     // protected command list
-    for (uint8_t i = 0; i < TOTAL_PROT; i++) {
-        if (strncmp(cmd_prot[i], s, strlen(cmd_prot[i])) == 0) {
+    for (uint8_t i = 0; i < TOTAL_PROTEC; i++) {
+        if (strncmp(cmd_protec[i], s, strlen(cmd_protec[i])) == 0) {
             return i + CMD_LOOKAWAY;
         }        
     }
@@ -84,13 +83,6 @@ uint8_t check_cmd(char *s) {
     }
 #endif
 	return CMD_ERROR;
-}
-
-void printarr(char* strarr[], uint8_t speed) {
-    // TODO: figure out a better way to do printing through the tmprint routine
-    // for (int i = 0; i < sizeof(strarr)/sizeof(strarr[0]); i++) {
-    //     printdos(strarr[i], speed);
-    // }
 }
 
 void printdos(char* str, uint8_t speed) {
@@ -175,18 +167,18 @@ void cmd_help(struct time_machine* tm, struct player* p) {
         printdos(print, tm->status.computer);
     }
 
-    // TODO: don't use pointer fuckery to print out debug commands in the future
+    // TODO: don't use pointer fuckery to print out the debug commands
     printdos("\nThe following protected commands are available:\n", tm->status.computer);
-    rows = floor((TOTAL_PROT + TOTAL_DEBUG) / 4);   // all complete rows
-    rem = (TOTAL_PROT + TOTAL_DEBUG) % 4;           // final incomplete row
+    rows = floor((TOTAL_PROTEC + TOTAL_DEBUG) / 4);   // all complete rows
+    rem = (TOTAL_PROTEC + TOTAL_DEBUG) % 4;           // final incomplete row
     for (int i = 0; i < rows; i++) {
         snprintf(print, PRINT_BUF, "%-9s %-9s %-9s %-9s\n",
-                 cmd_prot[i*4], cmd_prot[i*4 + 1], 
-                 cmd_prot[i*4 + 2], cmd_prot[i*4 + 3]);
+                 cmd_protec[i*4], cmd_protec[i*4 + 1], 
+                 cmd_protec[i*4 + 2], cmd_protec[i*4 + 3]);
         printdos(print, tm->status.computer);
     }
     for (int i = 4 * rows; i < 4 * rows + rem; i++) {
-        snprintf(print, PRINT_BUF, "%-9s ", cmd_list[i]);
+        snprintf(print, PRINT_BUF, "%-9s ", cmd_protec[i]);
         printdos(print, tm->status.computer);
     }
 
@@ -223,13 +215,16 @@ void cmd_report(struct time_machine* tm, struct player* p) {
 }
 
 void cmd_odds(struct time_machine* tm, struct player* p) {
-    printdos("odds goes moo.\n", tm->status.computer);
+    printdos("Never tell me the odds.\n", tm->status.computer);
 }
 
 /***** tdos protected command functions *****/
 
 void cmd_lookaway(struct time_machine* tm, struct player* p) {
-    printdos("lookaway goes moo.\n", tm->status.computer);
+    printdos("You look away from the console.\n", tm->status.computer);
+    lineprint('-', 64);
+    delay(4096);
+    p->view = VIEW_INSIDE;
 }
 
 void cmd_travel(struct time_machine* tm, struct player* p) {
@@ -237,7 +232,10 @@ void cmd_travel(struct time_machine* tm, struct player* p) {
 }
 
 void cmd_exit(struct time_machine* tm, struct player* p) {
-    printdos("exit goes moo.\n", tm->status.computer);
+    printdos("You look away from the screen and pause the game.\n", tm->status.computer);
+    lineprint('_', 64);
+    p->paused = true;
+    delay(4096);
 }
 
 void cmd_emergency(struct time_machine* tm, struct player* p) {
@@ -247,7 +245,8 @@ void cmd_emergency(struct time_machine* tm, struct player* p) {
 /***** tdos non-command functions *****/
 
 void cmd_error(struct time_machine* tm) {
-    printdos("error goes moo.\n", tm->status.computer);
+    snprintf(print, PRINT_BUF, "%s?\n", cmd);
+    printdos(print, tm->status.computer);
 }
 
 void cmd_null(struct time_machine* tm) {

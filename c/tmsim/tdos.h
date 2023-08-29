@@ -13,8 +13,8 @@
 
 /***** command constants & preprocessor declarations *****/
 
-#define VERSION         "0.0.7"
-#define COMPILED        "08/28/2023"
+#define VERSION         "0.0.8"
+#define COMPILED        "08/29/2023"
 
 // normal commands (allows for shortcuts)
 #define CMD_STATUS      0
@@ -37,7 +37,7 @@
 #define CMD_EMERGENCY   53
 
 #define TOTAL_CMD       (sizeof(cmd_list)/sizeof(cmd_list[0]))
-#define TOTAL_PROT      (sizeof(cmd_prot)/sizeof(cmd_prot[0]))
+#define TOTAL_PROTEC    (sizeof(cmd_protec)/sizeof(cmd_protec[0]))
 
 // non-commands
 #define CMD_ERROR       98
@@ -66,7 +66,7 @@ static char* cmd_list[] = {
 };
 
 // protected command list
-static char* cmd_prot[] = {
+static char* cmd_protec[] = {
     "lookaway",
     "travel",
     "exit",
@@ -97,9 +97,6 @@ void tdos_command_loop(struct time_machine*, struct player*);
 
 // check TDOS command input and return a status code
 uint8_t check_cmd(char*);
-
-// TDOS string array print routine
-void printarr(char*[], uint8_t);
 
 // TDOS module print routine
 void printdos(char*, uint8_t);

@@ -74,7 +74,6 @@ bool get_auxillary_power(uint8_t part, uint8_t mask) {
     }
 }
 
-
 void set_bits(uint8_t* byte, uint8_t mask) {
     *byte = *byte | mask;
 }
@@ -103,6 +102,7 @@ void refresh_power_data(struct time_machine* tm) {
 
 void refresh_part_status(struct time_machine* tm) {
     uint8_t worst = NOM;
+    uint8_t pc_worst = NOM;
     uint8_t cond;
     for (uint8_t i = 0; i < 6; i++) {
         cond = get_part_status(get_condition(get_part(i, CRITICAL, tm)));
@@ -111,7 +111,11 @@ void refresh_part_status(struct time_machine* tm) {
         cond = get_part_status(get_condition(get_part(i, AUXILLARY, tm)));
         tm->status.auxillary[i] = cond;
         worst = cond > worst ? cond : worst;
+        cond = get_part_status(get_condition(get_part(i, COMPUTER, tm)));
+        pc_worst = cond > pc_worst ? cond : pc_worst;
+        worst = cond > worst ? cond : worst;        
     }
+    tm->status.computer = pc_worst;
     tm->tm_status = worst;
 }
 
@@ -236,4 +240,5 @@ char* status_disp(uint8_t id) {
     case 3:     return "FLT";   break;
     default:    printf("Something went wrong in statusdisp()");
     }
+    return "ERR";
 }

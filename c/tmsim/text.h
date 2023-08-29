@@ -30,7 +30,7 @@ static const uint16_t delays[8] = {
 
 // delay loop constant
 #ifdef RC
-#define DELAYLOOP   8
+#define DELAYLOOP   16
 #else
 #define DELAYLOOP   65535
 #endif

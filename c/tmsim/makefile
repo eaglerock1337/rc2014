@@ -13,15 +13,15 @@ debug:  $(OFILES)
 
 rcbuild:
 	docker run -v ${PWD}:/src/ -it z88dk/z88dk \
-		zcc +rc2014 -subtype=cpm -clib=new -SO3 \
-		-create-app -DRC -o tmsim $(CFILES)
+		zcc +rc2014 -subtype=cpm -SO3 --math32 --math16 \
+		--vt100 -create-app -DRC -o tmsim $(CFILES)
 	sudo chown $(USERNAME):$(USERNAME) tmsim*
 	mv tmsim.bin tmsim.com
 
 rcdebug:
 	docker run -v ${PWD}:/src/ -it z88dk/z88dk \
-		zcc +rc2014 -subtype=cpm -clib=new -SO3 \
-		-create-app -DRC -DDEBUG -o tmsim $(CFILES)
+		zcc +rc2014 -subtype=cpm -SO3 --math32 --math16 \
+		--vt100 -create-app -DRC -DDEBUG -o tmsim $(CFILES)
 	sudo chown $(USERNAME):$(USERNAME) tmsim*
 	mv tmsim.bin tmsim.com
 
