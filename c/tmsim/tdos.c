@@ -153,7 +153,7 @@ void cmd_sensors(struct time_machine* tm, struct player* p) {
 
 void cmd_help(struct time_machine* tm, struct player* p) {
     // TODO: add sarcasm (use a help_count variable?)
-    printdos("The following commands are available:\n", tm->status.computer);
+    printdos("==== The following commands are available:\n", tm->status.computer);
     uint8_t rows = floor(TOTAL_CMD / 4);        // all complete rows
     uint8_t rem = TOTAL_CMD % 4;                // final incomplete row
     for (int i = 0; i < rows; i++) {
@@ -166,9 +166,10 @@ void cmd_help(struct time_machine* tm, struct player* p) {
         snprintf(print, PRINT_BUF, "%-9s ", cmd_list[i]);
         printdos(print, tm->status.computer);
     }
+    printdos("-- These commands can be abbreviated (e.g. 'sen' or 'ca').\n", tm->status.computer);
 
     // TODO: don't use pointer fuckery to print out the debug commands
-    printdos("\nThe following protected commands are available:\n", tm->status.computer);
+    printdos("\n==== The following protected commands are available:\n", tm->status.computer);
     rows = floor((TOTAL_PROTEC + TOTAL_DEBUG) / 4);   // all complete rows
     rem = (TOTAL_PROTEC + TOTAL_DEBUG) % 4;           // final incomplete row
     for (int i = 0; i < rows; i++) {
@@ -181,9 +182,7 @@ void cmd_help(struct time_machine* tm, struct player* p) {
         snprintf(print, PRINT_BUF, "%-9s ", cmd_protec[i]);
         printdos(print, tm->status.computer);
     }
-
-    // TODO: add more detailed help option here
-    printdos("\n", tm->status.computer);
+    printdos("\n-- Protected commands require typing the exact command.\n", tm->status.computer);
 }
 
 void cmd_circuits(struct time_machine* tm, struct player* p) {
@@ -232,7 +231,7 @@ void cmd_travel(struct time_machine* tm, struct player* p) {
 }
 
 void cmd_exit(struct time_machine* tm, struct player* p) {
-    printdos("You look away from the screen and pause the game.\n", tm->status.computer);
+    printdos("\nYou look away from the screen and pause the game.\n", tm->status.computer);
     lineprint('_', 64);
     p->paused = true;
     delay(4096);
@@ -247,6 +246,7 @@ void cmd_emergency(struct time_machine* tm, struct player* p) {
 void cmd_error(struct time_machine* tm) {
     snprintf(print, PRINT_BUF, "%s?\n", cmd);
     printdos(print, tm->status.computer);
+    delay(1024);
 }
 
 void cmd_null(struct time_machine* tm) {

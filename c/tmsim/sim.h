@@ -28,7 +28,7 @@
 /***** action preprocessor declarations *****/
 
 // view-based actions - ASCII 1-9
-#define ACTION ONE      0x31
+#define ACTION_ONE      0x31
 #define ACTION_TWO      0x32
 #define ACTION_THREE    0x33
 #define ACTION_FOUR     0x34

@@ -22,10 +22,16 @@
 #define FAST_TDOS   6
 #define ENDING      7
 
-// delay array mappings
+// delay array mappings (matching above)
 static const uint16_t delays[8] = {
-    128, 320, 192, 96,
-    512, 256, 192, 2048
+    144, 
+    640, 
+    224, 
+    192,
+    512, 
+    256, 
+    192, 
+    1024
 };
 
 // delay loop constant
