@@ -26,8 +26,8 @@
 static const uint16_t delays[8] = {
     144, 
     640, 
-    224, 
-    192,
+    256, 
+    160,
     512, 
     256, 
     192, 
@@ -50,7 +50,6 @@ static char* print = print_buffer;      // 64-char print buffer
 
 // print the provided game text at the provided speed
 void tmprint(char*, uint8_t);
-// TODO: fix RC2014 newline printing issues (with pragma, maybe?)
 
 // delay loop for computers without a rtc
 void delay(uint16_t);
@@ -59,6 +58,6 @@ void delay(uint16_t);
 void lineprint(char, uint8_t);
 
 // get a single-character response from the player
-int get_response();
+int get_response(void);
 
 #endif

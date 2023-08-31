@@ -18,6 +18,7 @@ I'll tell you a story all about it later.
 |0.0.7|8/28/23|"commands, protected commands."|
 |0.0.8|8/29/23|fix compilers & debug text print|
 |0.0.9|8/29/23|sim loop input & inside view|
+|0.1.0|8/30/23|more sim loop + control view|
 
 ## architecture
 

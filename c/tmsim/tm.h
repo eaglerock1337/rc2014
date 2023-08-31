@@ -12,6 +12,9 @@
 #define OFF     0
 #define ON      1
 
+// power string constants
+static char* power_str[] = {"OFF", "ON", "FLT"};
+
 // display statuses
 #define NOM     0   // nominal status
 #define INF     1   // info status

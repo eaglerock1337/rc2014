@@ -94,7 +94,7 @@ void view_repairs(struct time_machine*, struct player*);
 /***** simulator action functions *****/
 
 // action - get some help
-void action_help();
+void action_help(void);
 
 // action - pause the game
 void action_pause(struct player*);

@@ -192,24 +192,23 @@ void tear_part(struct time_machine_part* part) {
 void power_part(uint8_t id, bool is_crit, bool status, struct time_machine* tm) {
     void (*bitop)(uint8_t*, uint8_t) = status ? &set_bits : &unset_bits;
     if (is_crit) {
-        (*bitop)(&tm->crit_power, pow(2, id));
+        (*bitop)(&tm->crit_power, (uint8_t)pow(2, id));
     } else {
-        (*bitop)(&tm->aux_power, pow(2, id));
+        (*bitop)(&tm->aux_power, (uint8_t)pow(2, id));
     }
 }
 
 void reset_part(uint8_t id, bool is_crit, bool status, struct time_machine* tm) {
     void (*bitop)(uint8_t*, uint8_t) = status ? &set_bits : &unset_bits;
     if (is_crit) {
-        (*bitop)(&tm->crit_status, pow(2, id));
+        (*bitop)(&tm->crit_status, (uint8_t)pow(2, id));
     } else {
-        (*bitop)(&tm->aux_status, pow(2, id));
+        (*bitop)(&tm->aux_status, (uint8_t)pow(2, id));
     }
 }
 
 bool turn_on_part(uint8_t id, bool is_crit, struct time_machine* tm) {
     struct time_machine_part* part = get_part(id, is_crit, tm);
-    uint8_t pwr_byte = is_crit ? tm->crit_power : tm->aux_power;
     uint8_t flt_byte = is_crit ? tm->crit_status : tm->aux_status;
     uint8_t cond = get_condition(part);
     uint8_t chance = 9/10 * cond + 5;
@@ -217,7 +216,7 @@ bool turn_on_part(uint8_t id, bool is_crit, struct time_machine* tm) {
         power_part(id, is_crit, ON, tm);
         return true;
     } else {
-        // TODO: set fault bit for part (hrmph).
+        reset_part(id, is_crit, OFF, tm);
         return false;
     }
 }
@@ -235,6 +234,7 @@ char* get_critical_part(uint8_t part) {
     case SUPPORT:   return "Life Support System";   break;
     case AIRLOCK:   return "Time Machine Airlock";  break;
     case CIRCUITS:  return "Time Travel Circuits";  break;
+    case CONSOLE:   return "Console and Keyboard";  break;
     case RC2014:    return "RC2014 Microcomputer";  break;
     case ALL_CRIT:  return "All Critical Systems";  break;
     case PWR_LOCK:  return "Power Lockout Switch";  break;
@@ -267,15 +267,15 @@ char* get_computer_part(uint8_t part) {
 }
 
 char* get_power_status(struct time_machine* tm, uint8_t part, bool is_crit) {
-    char* str = "OFF";
+    char* str = power_str[0];
     bool is_on = is_crit ? get_critical_power(part, tm->crit_power) 
                          : get_auxillary_power(part, tm->aux_power);
     bool is_flt = is_crit ? get_critical_fault(part, tm->crit_status)
                           : get_auxillary_fault(part, tm->aux_status);
     if (is_flt) {
-        str = "FLT";
+        str = power_str[2];
     } else if (is_on) {
-        str = "ON";
+        str = power_str[1];
     }
     return str;
 }

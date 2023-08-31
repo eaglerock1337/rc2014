@@ -30,7 +30,7 @@ void lineprint(char dash, uint8_t size) {
     putc('\n', stdout);
 }
 
-int get_response() {
+int get_response(void) {
     tmprint("\nWhat would you like to do? (press a # or h for help): ", NORM_NARR);
     scanf("%s", print);
     return toupper((int)print[0]);

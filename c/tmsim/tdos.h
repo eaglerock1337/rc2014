@@ -13,8 +13,8 @@
 
 /***** command constants & preprocessor declarations *****/
 
-#define VERSION         "0.0.9"
-#define COMPILED        "08/29/2023"
+#define VERSION         "0.1.0"
+#define COMPILED        "08/30/2023"
 
 // normal commands (allows for shortcuts)
 #define CMD_STATUS      0

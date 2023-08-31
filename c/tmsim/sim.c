@@ -51,9 +51,9 @@ void view_inside(struct time_machine* tm, struct player* p) {
         p->new_view = false;
         narrate("\nYou are sitting inside the time machine.\n", NORM);
         narrate("\nAmidst the mess of wires and exposed circuitry, you can look at\n"
-                " |1| the main CONTROL panel, the |2| AUXILLARY control panel,\n", NORM);
+                " |1| the main CONTROL panel, the |2| AUXILLARY control panel,\n", FAST);
         narrate(" |3| the circuit BREAKER panel,  |4| the COMPUTER and CONSOLE,\n"
-                " |5| a STORAGE compartment, and  |6| the airlock to the OUTSIDE.\n", NORM);
+                " |5| a STORAGE compartment, and  |6| the airlock to the OUTSIDE.\n", FAST);
         narrate("You can also |7| make REPAIRS or |8| get some REST.\n", NORM);
     } else {
         narrate("\nYou are still sitting inside the time machine.\n", NORM);
@@ -168,7 +168,7 @@ void view_repairs(struct time_machine* tm, struct player* p) {
 
 /***** simulator action functions *****/
 
-void action_help() {
+void action_help(void) {
     narrate("I'll bet you want help.\n", SLOW);
     delay(8192);
 }
@@ -188,10 +188,10 @@ void action_crit_button(struct time_machine* tm, struct player* p, uint8_t part)
         turn_off_part(part, true, tm);
         snprintf(print, PRINT_BUF, "\nAfter pressing the button, the %s turns off.\n", part_name);
         narrate(print, NORM);
-        narrate("The control panel lights flicker and update the display.\n", NORM);
+        narrate("\nThe control panel lights flicker and update the display.\n", NORM);
         p->new_view = true;     // let user see refreshed panel
     } else if (turn_on_part(part, true, tm)) {
-        snprintf(print, PRINT_BUF, "After pressing the button, the %s turns on.\n", part_name);
+        snprintf(print, PRINT_BUF, "\nAfter pressing the button, the %s turns on.\n", part_name);
         narrate(print, NORM);
     } else {
         narrate("Pressing the button caused some sparks inside.\n", SLOW);
