@@ -6,10 +6,10 @@ ZFILES=tmsim.ihx tmsim_BSS.bin tmsim_CODE.bin
 CFLAGS= -D DEBUG
 
 build:  $(OFILES)
-	gcc -o tmsim $(OFILES) 
+	gcc -o tmsim $(OFILES) -lm
 
 debug:  $(OFILES)
-	gcc -o tmsim $(CFLAGS) $(OFILES) 
+	gcc -o tmsim $(CFLAGS) $(OFILES) -lm
 
 rcbuild:
 	docker run -v ${PWD}:/src/ -it z88dk/z88dk \

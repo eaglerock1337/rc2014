@@ -1,3 +1,4 @@
+#include <math.h>
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdio.h>
@@ -37,10 +38,10 @@ void initialize_tm(uint8_t difficulty, struct time_machine* tm) {
     roll_parts(difficulty, &(tm->parts));
 
     tm->crit_power = PWR_LOCK_ON - 1;       // crit parts on
-    tm->crit_status = COORDS_OK - 1;        // crit parts ok
+    tm->crit_status = CRITICAL_OK - 1;      // crit parts ok
 
     tm->aux_power = 0;                      // aux parts off
-    tm->aux_status = 1;                     // aux parts ok
+    tm->aux_status = CRITICAL_OK - 1;       // aux parts ok
 }
 
 /***** bitwise helper functions *****/
@@ -50,7 +51,7 @@ bool get_critical_power(uint8_t part, uint8_t byte) {
     switch (part) {
     case POWER:     return byte & POWER_ON;     break;
     case SUPPORT:   return byte & SUPPORT_ON;   break;
-    case AIRLOCK :  return byte & AIRLOCK_ON;   break;
+    case AIRLOCK:   return byte & AIRLOCK_ON;   break;
     case CIRCUITS:  return byte & CIRCUITS_ON;  break;
     case CONSOLE:   return byte & CONSOLE_ON;   break;
     case RC2014:    return byte & RC2014_ON;    break;
@@ -60,6 +61,20 @@ bool get_critical_power(uint8_t part, uint8_t byte) {
     }
 }
 
+// get bitwise fault status of a critical part by ID
+bool get_critical_fault(uint8_t part, uint8_t byte) {
+    switch (part) {
+    case POWER:     return !byte & POWER_OK;     break;
+    case SUPPORT:   return !byte & SUPPORT_OK;   break;
+    case AIRLOCK :  return !byte & AIRLOCK_OK;   break;
+    case CIRCUITS:  return !byte & CIRCUITS_OK;  break;
+    case CONSOLE:   return !byte & CONSOLE_OK;   break;
+    case RC2014:    return !byte & RC2014_OK;    break;
+    case ALL_CRIT:  return !byte & CRITICAL_OK;  break;
+    case PWR_LOCK:  return !byte & COORDS_OK;    break;
+    default:        return 0;   // do error stuff later
+    }
+}
 
 // get bitwise power status of an auxillary part by ID
 bool get_auxillary_power(uint8_t part, uint8_t mask) {
@@ -70,6 +85,19 @@ bool get_auxillary_power(uint8_t part, uint8_t mask) {
     case TESLA:     return mask & TESLA_ON;     break;
     case FUSION:    return mask & FUSION_ON;    break;
     case STEAM:     return mask & STEAM_ON;     break;
+    default:        return 0;   // do error stuff later
+    }
+}
+
+// get bitwise fault status of an auxillary part by ID
+bool get_auxillary_fault(uint8_t part, uint8_t mask) {
+    switch (part) {
+    case SENSORS:   return !mask & SENSORS_OK;   break;
+    case SHIELD:    return !mask & SHIELD_OK;    break;
+    case HOVER:     return !mask & HOVER_OK;     break;
+    case TESLA:     return !mask & TESLA_OK;     break;
+    case FUSION:    return !mask & FUSION_OK;    break;
+    case STEAM:     return !mask & STEAM_OK;     break;
     default:        return 0;   // do error stuff later
     }
 }
@@ -164,72 +192,92 @@ void tear_part(struct time_machine_part* part) {
 void power_part(uint8_t id, bool is_crit, bool status, struct time_machine* tm) {
     void (*bitop)(uint8_t*, uint8_t) = status ? &set_bits : &unset_bits;
     if (is_crit) {
-        (*bitop)(&tm->crit_power, id);
+        (*bitop)(&tm->crit_power, pow(2, id));
     } else {
-        (*bitop)(&tm->aux_power, id);
+        (*bitop)(&tm->aux_power, pow(2, id));
     }
 }
 
 void reset_part(uint8_t id, bool is_crit, bool status, struct time_machine* tm) {
     void (*bitop)(uint8_t*, uint8_t) = status ? &set_bits : &unset_bits;
     if (is_crit) {
-        (*bitop)(&tm->crit_power, id);
+        (*bitop)(&tm->crit_status, pow(2, id));
     } else {
-        (*bitop)(&tm->aux_power, id);
-    }}
+        (*bitop)(&tm->aux_status, pow(2, id));
+    }
+}
 
 bool turn_on_part(uint8_t id, bool is_crit, struct time_machine* tm) {
     struct time_machine_part* part = get_part(id, is_crit, tm);
+    uint8_t pwr_byte = is_crit ? tm->crit_power : tm->aux_power;
+    uint8_t flt_byte = is_crit ? tm->crit_status : tm->aux_status;
     uint8_t cond = get_condition(part);
     uint8_t chance = 9/10 * cond + 5;
     if (rand() % 100 < chance) {
         power_part(id, is_crit, ON, tm);
         return true;
     } else {
+        // TODO: set fault bit for part (hrmph).
         return false;
     }
 }
 
 void turn_off_part(uint8_t id, bool is_crit, struct time_machine* tm) {
-    reset_part(id, is_crit, OFF, tm);
+    // TODO: this should check for 
+    power_part(id, is_crit, OFF, tm);
 }
 
 /***** print functions *****/
 
 char* get_critical_part(uint8_t part) {
     switch (part) {
-    case 0:     return "Main Energy Cells";     break;
-    case 1:     return "Power Distrib. Unit";   break;
-    case 2:     return "Life Support System";   break;
-    case 3:     return "Time Machine Airlock";  break;
-    case 4:     return "Time Travel Circuits";  break;
-    case 5:     return "Time Machine Console";  break;
-    default:    return "Something went wrong";
+    case POWER:     return "Power Distrib. Unit";   break;
+    case SUPPORT:   return "Life Support System";   break;
+    case AIRLOCK:   return "Time Machine Airlock";  break;
+    case CIRCUITS:  return "Time Travel Circuits";  break;
+    case RC2014:    return "RC2014 Microcomputer";  break;
+    case ALL_CRIT:  return "All Critical Systems";  break;
+    case PWR_LOCK:  return "Power Lockout Switch";  break;
+    default:        return "Something went wrong";
     }
 }
 
 char* get_auxillary_part(uint8_t part) {
     switch (part) {
-    case 0:     return "Threat Sensor System";  break;
-    case 1:     return "Insibility Shield";     break;
-    case 2:     return "Hover Propulsion";      break;
-    case 3:     return "Tesla Charging Coil";   break;
-    case 4:     return "Mr Fusion Reactor";     break;
-    case 5:     return "Steam Charging Unit";   break;
+    case SENSORS:   return "Threat Sensor System";  break;
+    case SHIELD:    return "Insibility Shield";     break;
+    case HOVER:     return "Hover Propulsion";      break;
+    case TESLA:     return "Tesla Charging Coil";   break;
+    case FUSION:    return "Mr Fusion Reactor";     break;
+    case STEAM:     return "Steam Charging Unit";   break;
     default:    return "Something went wrong";
     }
 }
 
 char* get_computer_part(uint8_t part) {
     switch (part) {
-    case 0:     return "System Backplane";      break;
-    case 1:     return "Dual System Clock";     break;
-    case 2:     return "Z80 Processor Board";   break;
-    case 3:     return "RAM/ROM Memory Unit";   break;
-    case 4:     return "Dual Serial I/O";       break;
-    case 5:     return "TM Hardware Bridge";    break;
+    case BACKPLANE: return "System Backplane";      break;
+    case CLOCK:     return "Dual System Clock";     break;
+    case Z80_CPU:   return "Z80 Processor Board";   break;
+    case MEMORY:    return "RAM/ROM Memory Unit";   break;
+    case SERIAL_IO: return "Dual Serial I/O";       break;
+    case HW_BRIDGE: return "TM Hardware Bridge";    break;
     default:    return "Something went wrong";
     }
+}
+
+char* get_power_status(struct time_machine* tm, uint8_t part, bool is_crit) {
+    char* str = "OFF";
+    bool is_on = is_crit ? get_critical_power(part, tm->crit_power) 
+                         : get_auxillary_power(part, tm->aux_power);
+    bool is_flt = is_crit ? get_critical_fault(part, tm->crit_status)
+                          : get_auxillary_fault(part, tm->aux_status);
+    if (is_flt) {
+        str = "FLT";
+    } else if (is_on) {
+        str = "ON";
+    }
+    return str;
 }
 
 char* status_disp(uint8_t id) {

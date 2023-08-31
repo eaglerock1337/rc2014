@@ -52,8 +52,8 @@
 // critical power bitwise values
 #define POWER_ON    1
 #define SUPPORT_ON  2
-#define CIRCUITS_ON 4
-#define AIRLOCK_ON  8
+#define AIRLOCK_ON  4
+#define CIRCUITS_ON 8
 #define CONSOLE_ON  16
 #define RC2014_ON   32
 #define CRITICAL_ON 64
@@ -63,7 +63,7 @@
 #define POWER_OK    1
 #define SUPPORT_OK  2
 #define AIRLOCK_OK  4
-#define CIRCUTS_OK  8
+#define CIRCUITS_OK 8
 #define CONSOLE_OK  16
 #define RC2014_OK   32
 #define CRITICAL_OK 64
@@ -143,12 +143,14 @@ void initialize_tm(uint8_t, struct time_machine*);
 // get bitwise power status of a critical part by ID
 bool get_critical_power(uint8_t, uint8_t);
 
-// TODO: add get_critical_status()
+// get bitwise fault status of a critical part by ID
+bool get_critical_fault(uint8_t, uint8_t);
 
 // get bitwise power status of an auxillary part by ID
 bool get_auxillary_power(uint8_t, uint8_t);
 
-// TODO: add get_auxillary_status()
+// get bitwise fault status of an auxillary part by ID
+bool get_auxillary_fault(uint8_t, uint8_t);
 
 // set a bit or bits with the provided mask
 void set_bits(uint8_t* byte, uint8_t mask);
@@ -205,6 +207,9 @@ char* get_auxillary_part(uint8_t);
 
 // returns a computer part name based on its array ID
 char* get_computer_part(uint8_t);
+
+// returns a printable power status based on ID
+char* get_power_status(struct time_machine*, uint8_t, bool);
 
 // return the status display for the given status id
 char* status_disp(uint8_t);

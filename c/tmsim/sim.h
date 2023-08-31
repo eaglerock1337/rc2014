@@ -19,15 +19,18 @@
 
 #define VIEW_INSIDE     0
 #define VIEW_CONTROL    1
-#define VIEW_BREAKER    2
-#define VIEW_COMPUTER   3
-#define VIEW_CONSOLE    4
-#define VIEW_STORAGE    5
-#define VIEW_OUTSIDE    6
+#define VIEW_AUXILLARY  2
+#define VIEW_BREAKER    3
+#define VIEW_COMPUTER   4
+#define VIEW_CONSOLE    5
+#define VIEW_STORAGE    6
+#define VIEW_REPAIRS    7
+#define VIEW_OUTSIDE    8
 
 /***** action preprocessor declarations *****/
 
-// view-based actions - ASCII 1-9
+// view-based actions - ASCII 0-9
+#define ACTION_ZERO     0x30
 #define ACTION_ONE      0x31
 #define ACTION_TWO      0x32
 #define ACTION_THREE    0x33
@@ -42,6 +45,11 @@
 #define ACTION_HELP     0x48    // uppercase H
 #define ACTION_LOOK     0x4C    // uppercase L
 #define ACTION_PAUSE    0x50    // uppercase P
+
+/***** string constants *****/
+
+static char panel_line[]  = "    ---------------------------------------------\n";
+static char panel_line2[] = "    |----------|----------|----------|----------|\n";
 
 /***** primary input buffer *****/
 
@@ -68,7 +76,7 @@ void view_control_panel(struct time_machine*, struct player*);
 // view - looking at the breaker panel
 void view_breaker_panel(struct time_machine*, struct player*);
 
-// view - looking at the RC2014 computer
+// view - looking at the computer when it or the console is off
 void view_computer(struct time_machine*, struct player*);
 
 // view - looking at the time machine console
@@ -80,6 +88,9 @@ void view_storage(struct time_machine*, struct player*);
 // view - outside of the time machine
 void view_outside(struct time_machine*, struct player*);
 
+// view - repairing the time machine
+void view_repairs(struct time_machine*, struct player*);
+
 /***** simulator action functions *****/
 
 // action - get some help
@@ -88,6 +99,12 @@ void action_help();
 // action - pause the game
 void action_pause(struct player*);
 
+// action - press one of the critical part buttons
+void action_crit_button(struct time_machine*, struct player*, uint8_t);
+
+// action - attempt to engage the critical power lockout
+void action_power_lock(struct time_machine*, struct player*);
+
 /***** simulator helper routines *****/
 
 // narrate the game with the tmprint function
@@ -95,5 +112,8 @@ void narrate(char*, uint8_t);
 
 // interpret provided response for letter-based actions from the player
 void check_general_actions(struct time_machine*, struct player*, int);
+
+// check which computer view to use.
+void check_computer(struct time_machine*, struct player*);
 
 #endif
